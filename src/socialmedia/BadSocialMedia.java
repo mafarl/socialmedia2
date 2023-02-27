@@ -1,5 +1,6 @@
 package socialmedia;
 
+import java.*;
 import java.io.IOException;
 
 /**
@@ -10,6 +11,14 @@ import java.io.IOException;
  * @version 1.0
  */
 public class BadSocialMedia implements SocialMediaPlatform {
+	
+	// attributes
+	private ArrayList<Account> listOfAccounts = new ArrayList<>();
+	private ArrayList<Post> listOfPosts = new ArrayList<>();
+	private int idAccount = 0;
+	private int idPost = 0;
+	// 0 - original, 1 - comments, 2 - endorsements
+	private int[] numberOfPosts = new int[]{0,0,0};
 
 	@Override
 	public int createAccount(String handle) throws IllegalHandleException, InvalidHandleException {
