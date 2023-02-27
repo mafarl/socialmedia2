@@ -1,16 +1,37 @@
-import java.*;
+import java.util.*;
 
 class Account{
-
-	// empty hash map which will be passed to the post constructor
-	HashMap<String, ArrayList<Integer>> storage = new HashMap<String, ArrayList<Integer>>();
+	
+	// attributes
+	private String handle;
+	private int id;
+	private String description;
+	
+	// getter methods
+	public String getHandle(){
+		return handle;
+	}
+	public int getID(){
+		return id;
+	}
+	public String getDescription(){
+		return description;
+	}
+	
+	// setter methods
+	public void setHandle(String handle){
+		this.handle = handle;
+	}
+	public void setDescription(String description){
+		this.description = description;
+	}
 	
 	// constructor
-	public Account(String handle,int id, String description, storage){
+	public Account(String handle,int id, String description){
 		this.handle = handle;
 		this.id = id;
 		this.description = description;
-		this.storage = storage;
+		HashMap<String, ArrayList<Integer>> storage = new HashMap<String, ArrayList<Integer>>();
 		/* original - posts that account made 
 		   comments - comments that account made
 		   endorsements - account made
