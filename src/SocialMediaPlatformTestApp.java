@@ -3,6 +3,8 @@ import socialmedia.BadSocialMedia;
 import socialmedia.IllegalHandleException;
 import socialmedia.InvalidHandleException;
 import socialmedia.SocialMediaPlatform;
+import socialmedia.Account;
+import socialmedia.Post;
 
 /**
  * A short program to illustrate an app testing some minimal functionality of a

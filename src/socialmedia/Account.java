@@ -1,6 +1,7 @@
+package socialmedia;
 import java.util.*;
 
-class Account{
+public class Account{
 	
 	// attributes
 	private String handle;

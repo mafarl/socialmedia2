@@ -1,6 +1,7 @@
+package socialmedia;
 import java.util.*;
 
-class Post{
+public class Post{
 	
 	// attributes
 	private int numIdentifier;
