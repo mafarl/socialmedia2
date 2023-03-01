@@ -27,6 +27,12 @@ class Account{
 	}
 	
 	// constructor
+	public Account(String handle, int id){
+		this.handle = handle;
+		this.id = id;
+		String description;
+	}
+	
 	public Account(String handle,int id, String description){
 		this.handle = handle;
 		this.id = id;
