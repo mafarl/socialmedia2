@@ -30,7 +30,8 @@ class Account{
 	public Account(String handle, int id){
 		this.handle = handle;
 		this.id = id;
-		String description;
+		description="";
+		HashMap<String, ArrayList<Integer>> storage = new HashMap<String, ArrayList<Integer>>();
 	}
 	
 	public Account(String handle,int id, String description){
