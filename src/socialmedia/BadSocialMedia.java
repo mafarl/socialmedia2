@@ -19,7 +19,7 @@ public class BadSocialMedia implements SocialMediaPlatform {
 	// 0 - original, 1 - comments, 2 - endorsements
 	private int[] numberOfPosts = new int[]{0,0,0};
 	
-	//getters
+	// getters
 	public ArrayList getAccounts() {
 		return listOfAccounts;
 	}
@@ -36,55 +36,65 @@ public class BadSocialMedia implements SocialMediaPlatform {
 		return idPost;
 	}
 	
-	/*setters
-	public void addAccount(Account acc) {
-		listOfAccounts.add(acc);
-	}
+	// methods 
 	
-	public void addPost(Post post) {
-		listOfPosts.add(post);
-	}
-	
-	public void increaseAccountID() {
-		idAccount++;
-	}
-	
-	public void increasePostID() {
-		idPost++;
-	} */
-	
+	/**
+	 * Creates a new account instance with given handle
+	 * Adds it to the list of all accounts
+	 * Increments idAccount by 1
+	 */
 	@Override
 	public int createAccount(String handle) throws IllegalHandleException, InvalidHandleException {
-		// TODO Auto-generated method stub
-		
 		Account acc = new Account(handle, idAccount);
 		listOfAccounts.add(acc);
 		return idAccount++;
 		
-		
-		
 	}
 
+
+	/**
+	 * Creates a new account instance with the given handle and description
+	 * Adds it to the list of all accounts
+	 * Increments idAccount by 1
+	 */
 	@Override
 	public int createAccount(String handle, String description) throws IllegalHandleException, InvalidHandleException {
-		// TODO Auto-generated method stub
-		
 		Account acc = new Account(handle, idAccount, description);
 		listOfAccounts.add(acc);
 		return idAccount++;
 		
 	}
-
+	
+	/**
+	* Removes an account with the given ID 
+	* 
+	*/
 	@Override
 	public void removeAccount(int id) throws AccountIDNotRecognisedException {
-		// TODO Auto-generated method stub
-
+		// Need to remove all posts/endorsements
+		int counter = 0;
+		for (Account i : listOfAccounts) {
+			if (i.getID() == id) {
+				listOfAccounts.remove(counter);
+				break;
+			}
+		}
 	}
-
+	
+	/**
+	* Removes an account with the given handle
+	*
+	*/
 	@Override
 	public void removeAccount(String handle) throws HandleNotRecognisedException {
-		// TODO Auto-generated method stub
-
+		// Need to remove all posts/endorsements
+		int counter = 0;
+		for (Account i : listOfAccounts) {
+			if (i.getHandle() == handle) {
+				listOfAccounts.remove(counter);
+				break;
+			}
+		}
 	}
 
 	@Override
