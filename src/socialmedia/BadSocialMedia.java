@@ -8,8 +8,7 @@ import java.io.IOException;
  * the SocialMediaPlatform interface.
  * 
  * @author Diogo Pacheco
- * @version 1.0
- */
+ * @version 1.0 */
 public class BadSocialMedia implements SocialMediaPlatform {
 	
 	// attributes
@@ -19,17 +18,61 @@ public class BadSocialMedia implements SocialMediaPlatform {
 	private int idPost = 0;
 	// 0 - original, 1 - comments, 2 - endorsements
 	private int[] numberOfPosts = new int[]{0,0,0};
-
+	
+	//getters
+	public ArrayList getAccounts() {
+		return listOfAccounts;
+	}
+	
+	public ArrayList getPosts() {
+		return listOfPosts;
+	}
+	
+	public int getIDAccount() {
+		return idAccount;
+	}
+	
+	public int getIDPost() {
+		return idPost;
+	}
+	
+	/*setters
+	public void addAccount(Account acc) {
+		listOfAccounts.add(acc);
+	}
+	
+	public void addPost(Post post) {
+		listOfPosts.add(post);
+	}
+	
+	public void increaseAccountID() {
+		idAccount++;
+	}
+	
+	public void increasePostID() {
+		idPost++;
+	} */
+	
 	@Override
 	public int createAccount(String handle) throws IllegalHandleException, InvalidHandleException {
 		// TODO Auto-generated method stub
-		return 0;
+		
+		Account acc = new Account(handle, idAccount);
+		listOfAccounts.add(acc);
+		return idAccount++;
+		
+		
+		
 	}
 
 	@Override
 	public int createAccount(String handle, String description) throws IllegalHandleException, InvalidHandleException {
 		// TODO Auto-generated method stub
-		return 0;
+		
+		Account acc = new Account(handle, idAccount, description);
+		listOfAccounts.add(acc);
+		return idAccount++;
+		
 	}
 
 	@Override
