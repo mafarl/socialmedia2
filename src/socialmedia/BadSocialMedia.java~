@@ -45,18 +45,6 @@ public class BadSocialMedia implements SocialMediaPlatform {
 	 */
 	@Override
 	public int createAccount(String handle) throws IllegalHandleException, InvalidHandleException {
-		
-		//Check if already exists
-		for (Account i : listOfAccounts) {
-			if (i.getHandle().equals(handle)) {
-				throw new IllegalHandleException();
-			}
-		}
-		// Check if valid form
-		if (handle.isEmpty() || handle.length() > 30 || handle.matches(".*\\s.*")){
-			throw new InvalidHandleException();
-		}
-		
 		Account acc = new Account(handle, idAccount);
 		listOfAccounts.add(acc);
 		return idAccount++;
@@ -71,18 +59,6 @@ public class BadSocialMedia implements SocialMediaPlatform {
 	 */
 	@Override
 	public int createAccount(String handle, String description) throws IllegalHandleException, InvalidHandleException {
-		
-		//Check if already exists
-		for (Account i : listOfAccounts) {
-			if (i.getHandle().equals(handle)) {
-				throw new IllegalHandleException();
-			}
-		}
-		// Check if valid form
-		if (handle.isEmpty() || handle.length() > 30 || handle.matches(".*\\s.*")){
-			throw new InvalidHandleException();
-		}
-		
 		Account acc = new Account(handle, idAccount, description);
 		listOfAccounts.add(acc);
 		return idAccount++;
@@ -97,18 +73,11 @@ public class BadSocialMedia implements SocialMediaPlatform {
 	public void removeAccount(int id) throws AccountIDNotRecognisedException {
 		// Need to remove all posts/endorsements
 		int counter = 0;
-		boolean isThere = false;
 		for (Account i : listOfAccounts) {
 			if (i.getID() == id) {
 				listOfAccounts.remove(counter);
-				isThere = true;
 				break;
 			}
-			counter++;
-		}
-		
-		if (!isThere){
-			throw new AccountIDNotRecognisedException();
 		}
 	}
 	
@@ -120,68 +89,24 @@ public class BadSocialMedia implements SocialMediaPlatform {
 	public void removeAccount(String handle) throws HandleNotRecognisedException {
 		// Need to remove all posts/endorsements
 		int counter = 0;
-		boolean isThere = false;
 		for (Account i : listOfAccounts) {
 			if (i.getHandle() == handle) {
 				listOfAccounts.remove(counter);
-				isThere = true;
 				break;
 			}
-			counter++;
-		}
-		
-		if (!isThere){
-			throw new HandleNotRecognisedException();
 		}
 	}
 
 	@Override
 	public void changeAccountHandle(String oldHandle, String newHandle)
 			throws HandleNotRecognisedException, IllegalHandleException, InvalidHandleException {
-		//Check if newHandle already exists 
-		for (Account i : listOfAccounts) {
-			if (i.getHandle().equals(newHandle)) {
-				throw new IllegalHandleException();
-			}
-		}
-		//Check if new handle is valid
-		if (newHandle.isEmpty() || newHandle.length() > 30 || newHandle.matches(".*\\s.*")){
-			throw new InvalidHandleException();
-		}
-			
-		//Find the account that matches oldHandle
-		boolean isThere = false;
-		for (Account i : listOfAccounts) {
-			System.out.println(i.getHandle());
-			if (i.getHandle().equals(oldHandle)){
-				i.setHandle(newHandle);
-				isThere = true;
-				break;
-			}
-		}
-		//If the oldHandle doesn't exist
-		if (!isThere){
-			throw new HandleNotRecognisedException();
-		}
+		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void updateAccountDescription(String handle, String description) throws HandleNotRecognisedException {
-		
-		//Find the account that matches oldHandle
-		boolean isThere = false;
-		for (Account i : listOfAccounts) {
-			if (i.getHandle().equals(handle)){
-				i.setDescription(description);
-				isThere = true;
-				break;
-			}
-		}
-		//If the handle doesn't exist
-		if (!isThere){
-			throw new HandleNotRecognisedException();
-		}	
+		// TODO Auto-generated method stub
 
 	}
 
@@ -233,7 +158,7 @@ public class BadSocialMedia implements SocialMediaPlatform {
 	@Override
 	public int getNumberOfAccounts() {
 		// TODO Auto-generated method stub
-		return listOfAccounts.size();
+		return 0;
 	}
 
 	@Override

@@ -5,7 +5,6 @@ import socialmedia.InvalidHandleException;
 import socialmedia.SocialMediaPlatform;
 import socialmedia.Account;
 import socialmedia.Post;
-import java.util.*;
 
 /**
  * A short program to illustrate an app testing some minimal functionality of a
@@ -34,23 +33,13 @@ public class SocialMediaPlatformTestApp {
 		assert (platform.getTotalCommentPosts() == 0) : "Innitial SocialMediaPlatform not empty as required.";
 		assert (platform.getTotalEndorsmentPosts() == 0) : "Innitial SocialMediaPlatform not empty as required.";
 
-		Integer id,id2;
+		Integer id;
 		try {
 			id = platform.createAccount("my_handle");
-			id2 = platform.createAccount("handle2", "Hello world!");
-			assert (platform.getNumberOfAccounts() == 2) : "number of accounts registered in the system does not match";
-			
-			platform.changeAccountHandle("my_handle", "handle1");
-			
-			/*ArrayList<Account> listofAccounts = platform.getAccounts();
-			for (Account i: listofAccounts){
-				if (i.getId() == id){
-					System.out.println(i.getHandle());
-				}
-			}*/
+			assert (platform.getNumberOfAccounts() == 1) : "number of accounts registered in the system does not match";
 
 			platform.removeAccount(id);
-			assert (platform.getNumberOfAccounts() == 1) : "number of accounts registered in the system does not match";
+			assert (platform.getNumberOfAccounts() == 0) : "number of accounts registered in the system does not match";
 
 		} catch (IllegalHandleException e) {
 			assert (false) : "IllegalHandleException thrown incorrectly";
