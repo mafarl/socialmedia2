@@ -20,11 +20,11 @@ public class BadSocialMedia implements SocialMediaPlatform {
 	private int[] numberOfPosts = new int[]{0,0,0};
 	
 	// getters
-	public ArrayList getAccounts() {
+	public ArrayList<Account> getAccounts() {
 		return listOfAccounts;
 	}
 	
-	public ArrayList getPosts() {
+	public ArrayList<Post> getPosts() {
 		return listOfPosts;
 	}
 	
@@ -59,6 +59,7 @@ public class BadSocialMedia implements SocialMediaPlatform {
 		
 		Account acc = new Account(handle, idAccount);
 		listOfAccounts.add(acc);
+		
 		return idAccount++;
 		
 	}
@@ -152,12 +153,12 @@ public class BadSocialMedia implements SocialMediaPlatform {
 		//Find the account that matches oldHandle
 		boolean isThere = false;
 		for (Account i : listOfAccounts) {
-			System.out.println(i.getHandle());
 			if (i.getHandle().equals(oldHandle)){
 				i.setHandle(newHandle);
 				isThere = true;
 				break;
 			}
+			
 		}
 		//If the oldHandle doesn't exist
 		if (!isThere){
@@ -187,8 +188,50 @@ public class BadSocialMedia implements SocialMediaPlatform {
 
 	@Override
 	public String showAccount(String handle) throws HandleNotRecognisedException {
-		// TODO Auto-generated method stub
-		return null;
+		boolean isThere = false;
+		int index=0;
+		for (Account i : listOfAccounts) {
+			if (i.getHandle().equals(handle)){
+				isThere = true;
+				break;
+			}
+			index++;
+		}
+		//If the handle doesn't exist
+		if (!isThere){
+			throw new HandleNotRecognisedException();
+		}	
+		
+		int sumOfEndors = 0;
+		HashMap<String, ArrayList<Integer>> storageOfPostsFromAccount = listOfAccounts.get(index).storage;
+		//Iterate over original
+		for (int eachID : storageOfPostsFromAccount.get("original")){
+			for (Post i : listOfPosts) {
+				if (i.getNumIdentifier() == eachID) {
+					HashMap<String, ArrayList<Integer>> storageOfPostsFromPost = i.storage;
+					sumOfEndors+=storageOfPostsFromPost.get("endorsements").size();
+				}
+			}
+		}
+		
+		//Iterate over comments
+		for (int eachID : storageOfPostsFromAccount.get("comments")){
+			for (Post i : listOfPosts) {
+				if (i.getNumIdentifier() == eachID) {
+					HashMap<String, ArrayList<Integer>> storageOfPostsFromPost = i.storage;
+					sumOfEndors+=storageOfPostsFromPost.get("endorsements").size();
+				}
+			}
+		}
+		
+		// Find each post that the account's made and count its endorsements	
+		int sumOfPosts = storageOfPostsFromAccount.get("original").size()+storageOfPostsFromAccount.get("comments").size()+storageOfPostsFromAccount.get("endorsements").size();
+		String toReturn = String.format("ID: %d%n"+
+										"Handle: %s%n"+
+										"Description: %s%n"+
+										"Post count: %d%n"+
+										"Endorse count: %d", listOfAccounts.get(index).getID(), listOfAccounts.get(index).getHandle(), listOfAccounts.get(index).getDescription(), sumOfPosts, sumOfEndors);
+		return toReturn;
 	}
 
 	@Override

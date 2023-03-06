@@ -2,6 +2,7 @@ import socialmedia.AccountIDNotRecognisedException;
 import socialmedia.BadSocialMedia;
 import socialmedia.IllegalHandleException;
 import socialmedia.InvalidHandleException;
+import socialmedia.HandleNotRecognisedException;
 import socialmedia.SocialMediaPlatform;
 import socialmedia.Account;
 import socialmedia.Post;
@@ -44,14 +45,18 @@ public class SocialMediaPlatformTestApp {
 			
 			/*ArrayList<Account> listofAccounts = platform.getAccounts();
 			for (Account i: listofAccounts){
-				if (i.getId() == id){
+				if (i.getID() == id){
 					System.out.println(i.getHandle());
 				}
 			}*/
+			
+			platform.showAccount("handle1");
 
 			platform.removeAccount(id);
 			assert (platform.getNumberOfAccounts() == 1) : "number of accounts registered in the system does not match";
 
+		} catch (HandleNotRecognisedException e){
+			assert (false): "HandleNotRecognisedException thrown incorrectly";
 		} catch (IllegalHandleException e) {
 			assert (false) : "IllegalHandleException thrown incorrectly";
 		} catch (InvalidHandleException e) {
