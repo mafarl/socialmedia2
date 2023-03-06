@@ -203,12 +203,12 @@ public class BadSocialMedia implements SocialMediaPlatform {
 		}	
 		
 		int sumOfEndors = 0;
-		HashMap<String, ArrayList<Integer>> storageOfPostsFromAccount = listOfAccounts.get(index).storage;
+		HashMap<String, ArrayList<Integer>> storageOfPostsFromAccount = listOfAccounts.get(index).getAccountStorage();
 		//Iterate over original
 		for (int eachID : storageOfPostsFromAccount.get("original")){
 			for (Post i : listOfPosts) {
 				if (i.getNumIdentifier() == eachID) {
-					HashMap<String, ArrayList<Integer>> storageOfPostsFromPost = i.storage;
+					HashMap<String, ArrayList<Integer>> storageOfPostsFromPost = i.getPostStorage();
 					sumOfEndors+=storageOfPostsFromPost.get("endorsements").size();
 				}
 			}
@@ -218,7 +218,7 @@ public class BadSocialMedia implements SocialMediaPlatform {
 		for (int eachID : storageOfPostsFromAccount.get("comments")){
 			for (Post i : listOfPosts) {
 				if (i.getNumIdentifier() == eachID) {
-					HashMap<String, ArrayList<Integer>> storageOfPostsFromPost = i.storage;
+					HashMap<String, ArrayList<Integer>> storageOfPostsFromPost = i.getPostStorage();
 					sumOfEndors+=storageOfPostsFromPost.get("endorsements").size();
 				}
 			}

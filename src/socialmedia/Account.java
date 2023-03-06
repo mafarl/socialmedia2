@@ -7,7 +7,7 @@ public class Account{
 	private String handle;
 	private int id;
 	private String description;
-	HashMap<String, ArrayList<Integer>> storage;
+	private HashMap<String, ArrayList<Integer>> storage;
 	
 	// getter methods
 	public String getHandle(){
@@ -18,6 +18,9 @@ public class Account{
 	}
 	public String getDescription(){
 		return description;
+	}
+	public HashMap<String, ArrayList<Integer>> getAccountStorage(){
+		return storage;
 	}
 
 	// setter methods
@@ -34,6 +37,9 @@ public class Account{
 		this.id = id;
 		description="";
 		storage = new HashMap<String, ArrayList<Integer>>();
+		storage.put("original", new ArrayList<Integer>());
+		storage.put("comments", new ArrayList<Integer>());
+		storage.put("endorsements", new ArrayList<Integer>());
 	}
 	
 	public Account(String handle,int id, String description){

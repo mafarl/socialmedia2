@@ -50,7 +50,7 @@ public class SocialMediaPlatformTestApp {
 				}
 			}*/
 			
-			platform.showAccount("handle1");
+			System.out.println(platform.showAccount("handle1"));
 
 			platform.removeAccount(id);
 			assert (platform.getNumberOfAccounts() == 1) : "number of accounts registered in the system does not match";

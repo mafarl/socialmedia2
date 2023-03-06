@@ -7,7 +7,7 @@ public class Post{
 	private int numIdentifier;
 	private String message;
 	private int pointerToOriginal;
-	HashMap<String, ArrayList<Integer>> storage ;
+	private HashMap<String, ArrayList<Integer>> storage ;
 	
 	// getter methods
 	public int getNumIdentifier(){
@@ -18,6 +18,9 @@ public class Post{
 	}
 	public int getPointerToOriginal(){
 		return pointerToOriginal;
+	}
+	public HashMap<String, ArrayList<Integer>> getPostStorage(){
+		return storage;
 	}
 	
 	// constructor
