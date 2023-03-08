@@ -30,6 +30,27 @@ public class Account{
 	public void setDescription(String description){
 		this.description = description;
 	}
+	public void addToAccountStorageOriginal(int idPost){
+		ArrayList<Integer> value = new ArrayList<>();
+		value = storage.get("original");
+		value.add(idPost);
+		storage.put("original", value);
+		
+	}
+	public void addToAccountStorageComment(int idPost){
+		ArrayList<Integer> value = new ArrayList<>();
+		value = storage.get("comments");
+		value.add(idPost);
+		storage.put("comments", value);
+		
+	}
+	public void addToAccountStorageEndors(int idPost){
+		ArrayList<Integer> value = new ArrayList<>();
+		value = storage.get("endorsements");
+		value.add(idPost);
+		storage.put("endorsements", value);
+		
+	}
 	
 	// constructor
 	public Account(String handle, int id){
