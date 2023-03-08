@@ -1,4 +1,7 @@
 import socialmedia.AccountIDNotRecognisedException;
+import socialmedia.NotActionablePostException;
+import socialmedia.InvalidPostException;
+import socialmedia.PostIDNotRecognisedException;
 import socialmedia.BadSocialMedia;
 import socialmedia.IllegalHandleException;
 import socialmedia.InvalidHandleException;
@@ -37,35 +40,34 @@ public class SocialMediaPlatformTestApp {
 
 		Integer id,id2;
 		try {
-			id = platform.createAccount("my_handle");
+			
+			
+			id = platform.createAccount("handle1");
 			id2 = platform.createAccount("handle2", "Hello world!");
 			assert (platform.getNumberOfAccounts() == 2) : "number of accounts registered in the system does not match";
 			
-<<<<<<< Updated upstream
-			platform.changeAccountHandle("my_handle", "handle1");
-			
-			/*ArrayList<Account> listofAccounts = platform.getAccounts();
-			for (Account i: listofAccounts){
-				if (i.getID() == id){
-					System.out.println(i.getHandle());
-				}
-			}*/
-			
-=======
 			int idpost1 = platform.createPost("handle1", "helo");
 			int idendorspost = platform.endorsePost("handle1", idpost1);
 			int anotherpost = platform.createPost("handle2", "message");
-			int commentpost = platform.commentPost("handle2", idpost1, "hello");
+			int commentpost = platform.commentPost("handle1", idpost1, "hello");
 			int anotherendorspost = platform.endorsePost("handle2", commentpost);
-			int another2endorspost = platform.endorsePost("handle2", idpost1);
->>>>>>> Stashed changes
+			
 			System.out.println(platform.showAccount("handle1"));
+			System.out.println(platform.showAccount("handle2"));
+
+			
 
 			platform.removeAccount(id);
 			assert (platform.getNumberOfAccounts() == 1) : "number of accounts registered in the system does not match";
-
+		
+		} catch (PostIDNotRecognisedException e){
+			assert (false): "PostIDNotRecognisedException thrown incorrectly";
+		} catch (NotActionablePostException e){
+			assert (false): "NotActionablePostException thrown incorrectly";
 		} catch (HandleNotRecognisedException e){
 			assert (false): "HandleNotRecognisedException thrown incorrectly";
+		} catch (InvalidPostException e){
+			assert (false): "InvalidPostException thrown incorrectly";
 		} catch (IllegalHandleException e) {
 			assert (false) : "IllegalHandleException thrown incorrectly";
 		} catch (InvalidHandleException e) {
