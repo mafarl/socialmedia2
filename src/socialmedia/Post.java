@@ -6,8 +6,8 @@ public class Post{
 	// attributes
 	private int numIdentifier;
 	private String message;
-	private int ID;
 	private int pointerToOriginal;
+	private HashMap<String, ArrayList<Integer>> storage ;
 	
 	// getter methods
 	public int getNumIdentifier(){
@@ -19,7 +19,9 @@ public class Post{
 	public int getPointerToOriginal(){
 		return pointerToOriginal;
 	}
-	
+	public HashMap<String, ArrayList<Integer>> getPostStorage(){
+		return storage;
+	}
 	
 	// constructor
 	// original and comment
@@ -28,7 +30,7 @@ public class Post{
 		this.numIdentifier = numIdentifier;
 		this.message = message;
 		this.pointerToOriginal = pointerToOriginal;
-		HashMap<String, ArrayList<Integer>> storage = new HashMap<String, ArrayList<Integer>>();
+		storage = new HashMap<String, ArrayList<Integer>>();
 		// endorsements - the no. endorsements the post has
 		// comments - the no. comments the post has
 		storage.put("comments", new ArrayList<Integer>());

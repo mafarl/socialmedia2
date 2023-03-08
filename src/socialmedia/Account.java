@@ -7,6 +7,7 @@ public class Account{
 	private String handle;
 	private int id;
 	private String description;
+	private HashMap<String, ArrayList<Integer>> storage;
 	
 	// getter methods
 	public String getHandle(){
@@ -18,7 +19,10 @@ public class Account{
 	public String getDescription(){
 		return description;
 	}
-	
+	public HashMap<String, ArrayList<Integer>> getAccountStorage(){
+		return storage;
+	}
+
 	// setter methods
 	public void setHandle(String handle){
 		this.handle = handle;
@@ -32,14 +36,17 @@ public class Account{
 		this.handle = handle;
 		this.id = id;
 		description="";
-		HashMap<String, ArrayList<Integer>> storage = new HashMap<String, ArrayList<Integer>>();
+		storage = new HashMap<String, ArrayList<Integer>>();
+		storage.put("original", new ArrayList<Integer>());
+		storage.put("comments", new ArrayList<Integer>());
+		storage.put("endorsements", new ArrayList<Integer>());
 	}
 	
 	public Account(String handle,int id, String description){
 		this.handle = handle;
 		this.id = id;
 		this.description = description;
-		HashMap<String, ArrayList<Integer>> storage = new HashMap<String, ArrayList<Integer>>();
+		storage = new HashMap<String, ArrayList<Integer>>();
 		/* original - posts that account made 
 		   comments - comments that account made
 		   endorsements - account made

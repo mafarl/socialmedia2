@@ -2,9 +2,11 @@ import socialmedia.AccountIDNotRecognisedException;
 import socialmedia.BadSocialMedia;
 import socialmedia.IllegalHandleException;
 import socialmedia.InvalidHandleException;
+import socialmedia.HandleNotRecognisedException;
 import socialmedia.SocialMediaPlatform;
 import socialmedia.Account;
 import socialmedia.Post;
+import java.util.*;
 
 /**
  * A short program to illustrate an app testing some minimal functionality of a
@@ -33,14 +35,28 @@ public class SocialMediaPlatformTestApp {
 		assert (platform.getTotalCommentPosts() == 0) : "Innitial SocialMediaPlatform not empty as required.";
 		assert (platform.getTotalEndorsmentPosts() == 0) : "Innitial SocialMediaPlatform not empty as required.";
 
-		Integer id;
+		Integer id,id2;
 		try {
 			id = platform.createAccount("my_handle");
-			assert (platform.getNumberOfAccounts() == 1) : "number of accounts registered in the system does not match";
+			id2 = platform.createAccount("handle2", "Hello world!");
+			assert (platform.getNumberOfAccounts() == 2) : "number of accounts registered in the system does not match";
+			
+			platform.changeAccountHandle("my_handle", "handle1");
+			
+			/*ArrayList<Account> listofAccounts = platform.getAccounts();
+			for (Account i: listofAccounts){
+				if (i.getID() == id){
+					System.out.println(i.getHandle());
+				}
+			}*/
+			
+			System.out.println(platform.showAccount("handle1"));
 
 			platform.removeAccount(id);
-			assert (platform.getNumberOfAccounts() == 0) : "number of accounts registered in the system does not match";
+			assert (platform.getNumberOfAccounts() == 1) : "number of accounts registered in the system does not match";
 
+		} catch (HandleNotRecognisedException e){
+			assert (false): "HandleNotRecognisedException thrown incorrectly";
 		} catch (IllegalHandleException e) {
 			assert (false) : "IllegalHandleException thrown incorrectly";
 		} catch (InvalidHandleException e) {
