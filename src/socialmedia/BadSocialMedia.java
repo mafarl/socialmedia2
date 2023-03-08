@@ -14,6 +14,7 @@ public class BadSocialMedia implements SocialMediaPlatform {
 	// attributes
 	private ArrayList<Account> listOfAccounts = new ArrayList<>();
 	private ArrayList<Post> listOfPosts = new ArrayList<>();
+	private ArrayList<Post> listOfEmptyPosts = new ArrayList<>();
 	private int idAccount = 0;
 	private int idPost = 0;
 	// 0 - original, 1 - comments, 2 - endorsements
@@ -26,6 +27,10 @@ public class BadSocialMedia implements SocialMediaPlatform {
 	
 	public ArrayList<Post> getPosts() {
 		return listOfPosts;
+	}
+	
+	public ArrayList<Post> getEmptyPosts() {
+		return listOfEmptyPosts;
 	}
 	
 	public int getIDAccount() {
@@ -236,17 +241,34 @@ public class BadSocialMedia implements SocialMediaPlatform {
 
 	@Override
 	public int createPost(String handle, String message) throws HandleNotRecognisedException, InvalidPostException {
-		// TODO Auto-generated method stub
-		return 0;
+		// Check if valid form
+		if (message.isEmpty() || message.length() > 100){
+			throw new InvalidPostException();
+		}
+		
+		//
+		boolean isThere = false;
+		int counter = 0;
+		for (Account i : listOfAccounts) {
+			if (i.getHandle() == handle) {
+				listOfAccounts.get(counter).addToAccountStorageOriginal(idPost);
+				Post post = new Post(idPost, message);
+				listOfPosts.add(post);
+				isThere = true;
+				break;
+			}
+			counter++;
+		}
+		
+		//
+		if (!isThere){
+			throw new HandleNotRecognisedException();
+		}
+		
+		return idPost++;
 	}
 
 	@Override
-<<<<<<< Updated upstream
-	public int endorsePost(String handle, int id)
-			throws HandleNotRecognisedException, PostIDNotRecognisedException, NotActionablePostException {
-		// TODO Auto-generated method stub
-		return 0;
-=======
 	public int endorsePost(String handle, int id) throws HandleNotRecognisedException, PostIDNotRecognisedException, NotActionablePostException {
 		
 		//
@@ -286,18 +308,14 @@ public class BadSocialMedia implements SocialMediaPlatform {
 			throw new HandleNotRecognisedException();
 		}
 		
-		return idPost++;
-		
->>>>>>> Stashed changes
+		return idPost++;	
+
 	}
 
 	@Override
 	public int commentPost(String handle, int id, String message) throws HandleNotRecognisedException,
 			PostIDNotRecognisedException, NotActionablePostException, InvalidPostException {
-<<<<<<< Updated upstream
-		// TODO Auto-generated method stub
-		return 0;
-=======
+
 		// Check if valid form
 		if (message.isEmpty() || message.length() > 100){
 			throw new InvalidPostException();
@@ -341,16 +359,50 @@ public class BadSocialMedia implements SocialMediaPlatform {
 			throw new HandleNotRecognisedException();
 		}
 		
-		return idPost++;
-		
-		
->>>>>>> Stashed changes
+		return idPost++;	
+
 	}
 
 	@Override
 	public void deletePost(int id) throws PostIDNotRecognisedException {
-		// TODO Auto-generated method stub
-
+		
+		boolean postIsThere = false;
+		int postCounter = 0;
+		for (Post i : listOfPosts) {
+			if (i.getNumIdentifier() == id) {
+				postIsThere = true;
+				Post post = new Post(id);
+				listOfEmptyPosts.add(post);
+				
+				//Remove all its endorsements
+				HashMap<String, ArrayList<Integer>> storage = listOfPosts.get(postCounter).getPostStorage();
+				ArrayList<Integer> value = new ArrayList<>();
+				value = storage.get("endorsements");
+				value.clear();			
+				
+				//Remove from Account's storage
+				HashMap<String, ArrayList<Integer>> storage = new HashMap<>();
+				storage = .storageOfPostsFromAccount();
+				boolean deleted = false;
+				for "original"
+				
+				if (!deleted){
+					for "comments"
+				}
+				
+				
+				
+				//Remove from the whole listOfPosts (global)
+				listOfPosts.remove(listOfPosts.get(postCounter));
+				break;
+			}
+			postCounter++;
+		}
+		//
+		if (!postIsThere){
+			throw new PostIDNotRecognisedException();
+		}
+		
 	}
 
 	@Override

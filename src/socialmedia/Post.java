@@ -39,7 +39,6 @@ public class Post{
 		
 	}
 	
-	
 	// constructor
 	// original
 	// should have an array to store all the comments and endorsements
@@ -69,6 +68,12 @@ public class Post{
 	public Post(int numIdentifier,int pointerToOriginal){
 		this.numIdentifier = numIdentifier;
 		this.pointerToOriginal = pointerToOriginal;
+	}
+	
+	//empty 
+	public Post(int numIdentifier){
+		this.numIdentifier = numIdentifier;
+		message = "The original content was removed from the system and is no longer available.";
 	}
 
 }
