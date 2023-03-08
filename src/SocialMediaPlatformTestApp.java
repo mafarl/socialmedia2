@@ -41,6 +41,7 @@ public class SocialMediaPlatformTestApp {
 			id2 = platform.createAccount("handle2", "Hello world!");
 			assert (platform.getNumberOfAccounts() == 2) : "number of accounts registered in the system does not match";
 			
+<<<<<<< Updated upstream
 			platform.changeAccountHandle("my_handle", "handle1");
 			
 			/*ArrayList<Account> listofAccounts = platform.getAccounts();
@@ -50,6 +51,14 @@ public class SocialMediaPlatformTestApp {
 				}
 			}*/
 			
+=======
+			int idpost1 = platform.createPost("handle1", "helo");
+			int idendorspost = platform.endorsePost("handle1", idpost1);
+			int anotherpost = platform.createPost("handle2", "message");
+			int commentpost = platform.commentPost("handle2", idpost1, "hello");
+			int anotherendorspost = platform.endorsePost("handle2", commentpost);
+			int another2endorspost = platform.endorsePost("handle2", idpost1);
+>>>>>>> Stashed changes
 			System.out.println(platform.showAccount("handle1"));
 
 			platform.removeAccount(id);

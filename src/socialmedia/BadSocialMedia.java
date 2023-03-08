@@ -241,17 +241,110 @@ public class BadSocialMedia implements SocialMediaPlatform {
 	}
 
 	@Override
+<<<<<<< Updated upstream
 	public int endorsePost(String handle, int id)
 			throws HandleNotRecognisedException, PostIDNotRecognisedException, NotActionablePostException {
 		// TODO Auto-generated method stub
 		return 0;
+=======
+	public int endorsePost(String handle, int id) throws HandleNotRecognisedException, PostIDNotRecognisedException, NotActionablePostException {
+		
+		//
+		boolean postIsThere = false;
+		int postCounter = 0;
+		for (Post i : listOfPosts) {
+			if (i.getNumIdentifier() == id) {
+				postIsThere = true;
+				if (listOfPosts.get(postCounter).getMessage() == null){
+					throw new NotActionablePostException();
+				}
+				listOfPosts.get(postCounter).addToPostStorageEndors(idPost);
+				break;
+			}
+			postCounter++;
+		}
+		//
+		if (!postIsThere){
+			throw new PostIDNotRecognisedException();
+		}
+		
+		boolean isThere = false;
+		int counter = 0;
+		for (Account i : listOfAccounts) {
+			if (i.getHandle() == handle) {
+				listOfAccounts.get(counter).addToAccountStorageEndors(idPost);
+				Post post = new Post(idPost, id);
+				listOfPosts.add(post);
+				isThere = true;
+				break;
+			}
+			counter++;
+		}
+		
+		//
+		if (!isThere){
+			throw new HandleNotRecognisedException();
+		}
+		
+		return idPost++;
+		
+>>>>>>> Stashed changes
 	}
 
 	@Override
 	public int commentPost(String handle, int id, String message) throws HandleNotRecognisedException,
 			PostIDNotRecognisedException, NotActionablePostException, InvalidPostException {
+<<<<<<< Updated upstream
 		// TODO Auto-generated method stub
 		return 0;
+=======
+		// Check if valid form
+		if (message.isEmpty() || message.length() > 100){
+			throw new InvalidPostException();
+		}
+		
+		//
+		boolean postIsThere = false;
+		int postCounter = 0;
+		for (Post i : listOfPosts) {
+			if (i.getNumIdentifier() == id) {
+				postIsThere = true;
+				if (listOfPosts.get(postCounter).getMessage() == null){
+					System.out.println("Comment exception");
+					throw new NotActionablePostException();
+				}
+				listOfPosts.get(postCounter).addToPostStorageComment(idPost);
+				break;
+			}
+			postCounter++;
+		}
+		//
+		if (!postIsThere){
+			throw new PostIDNotRecognisedException();
+		}
+		
+		boolean isThere = false;
+		int counter = 0;
+		for (Account i : listOfAccounts) {
+			if (i.getHandle() == handle) {
+				listOfAccounts.get(counter).addToAccountStorageComment(idPost);
+				Post post = new Post(idPost, message,id);
+				listOfPosts.add(post);
+				isThere = true;
+				break;
+			}
+			counter++;
+		}
+		
+		//
+		if (!isThere){
+			throw new HandleNotRecognisedException();
+		}
+		
+		return idPost++;
+		
+		
+>>>>>>> Stashed changes
 	}
 
 	@Override
