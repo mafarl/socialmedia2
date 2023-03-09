@@ -60,7 +60,14 @@ public class SocialMediaPlatformTestApp {
 			System.out.println(platform.showAccount("dog"));
 			System.out.println(" ");
 			
+			System.out.println(platform.showIndividualPost(ashleyOrigOne));
+			System.out.println(" ");
+			System.out.println(platform.showIndividualPost(dogCommTwo));
+			System.out.println(" ");
+			
 			platform.deletePost(dogCommTwo);
+			System.out.println(platform.showIndividualPost(dogCommTwo));
+			
 			
 			System.out.println(" ");
 			System.out.println(platform.showAccount("maryia"));

@@ -458,8 +458,60 @@ public class BadSocialMedia implements SocialMediaPlatform {
 
 	@Override
 	public String showIndividualPost(int id) throws PostIDNotRecognisedException {
+		boolean postIsThere = false;
+		String handle = "";
+		for (Account acc : listOfAccounts){
+			HashMap<String, ArrayList<Integer>> storage = new HashMap<>();
+			storage = acc.getAccountStorage();
+			//look in the original
+			for (int orig : storage.get("original")){
+				if (orig == id){
+					handle = acc.getHandle();
+					postIsThere = true;
+					break;
+				}
+			}
+			//look in the comments
+			for (int comm : storage.get("comments")){
+				if (comm == id){
+					handle = acc.getHandle();
+					postIsThere = true;
+					break;
+				}
+			}
+			//look in the endorsements
+			for (int endor : storage.get("endorsements")){
+				if (endor == id){
+					handle = acc.getHandle();
+					postIsThere = true;
+					break;
+				}
+			}
+		}
 		
-		return null;
+		if (!postIsThere){
+				throw new PostIDNotRecognisedException();
+		}
+		
+		int indexNeededPost=0;
+		for (Post post : listOfPosts){
+			if (post.getNumIdentifier() == id){
+				indexNeededPost = listOfPosts.indexOf(post);
+				break;
+			}
+		}
+		
+		ArrayList<Integer> postStorageEnd = new ArrayList<>();
+		postStorageEnd = listOfPosts.get(indexNeededPost).getPostStorage().get("endorsements");
+		int noEndor = postStorageEnd.size();
+		
+		ArrayList<Integer> postStorageComm = new ArrayList<>();
+		postStorageComm = listOfPosts.get(indexNeededPost).getPostStorage().get("comments");
+		int noComm = postStorageComm.size();
+		
+		String message = listOfPosts.get(indexNeededPost).getMessage();
+		
+		return String.format("ID: %d%n Account: %s%n No.endorsements: %d|No.comments: %d%n %s", id, handle, noEndor, noComm, message);
 	}
 
 	@Override
