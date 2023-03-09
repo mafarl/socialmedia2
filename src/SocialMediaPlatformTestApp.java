@@ -38,33 +38,38 @@ public class SocialMediaPlatformTestApp {
 		assert (platform.getTotalCommentPosts() == 0) : "Innitial SocialMediaPlatform not empty as required.";
 		assert (platform.getTotalEndorsmentPosts() == 0) : "Innitial SocialMediaPlatform not empty as required.";
 
-		Integer id,id2;
+		Integer id,id2,id3;
 		try {
 			
 			
-			id = platform.createAccount("handle1");
-			id2 = platform.createAccount("handle2", "Hello world!");
-			assert (platform.getNumberOfAccounts() == 2) : "number of accounts registered in the system does not match";
+			id = platform.createAccount("maryia");
+			id2 = platform.createAccount("ashley", "Hello world!");
+			id3 = platform.createAccount("dog");
+			assert (platform.getNumberOfAccounts() == 3) : "number of accounts registered in the system does not match";
 			
-			int idpost1 = platform.createPost("handle1", "helo");
-			int idendorspost = platform.endorsePost("handle1", idpost1);
-			int anotherpost = platform.createPost("handle2", "message");
-			int commentpost = platform.commentPost("handle1", idpost1, "hello");
-			int anotherendorspost = platform.endorsePost("handle2", commentpost);
-			
-			System.out.println(platform.showAccount("handle1"));
-			System.out.println(platform.showAccount("handle2"));
+			int maryiaOrigZero = platform.createPost("maryia", "First post");
+			int ashleyOrigOne = platform.createPost("ashley", "First post");
+			int dogCommTwo = platform.commentPost("dog",maryiaOrigZero,"First comment");
+			int ashleyEndorThree = platform.endorsePost("ashley",dogCommTwo);
+			int maryiaEndroFour = platform.endorsePost("maryia",dogCommTwo);
+			int maryiacommFive = platform.commentPost("maryia",ashleyOrigOne,"First comment");
 			
 			
-			platform.deletePost(idpost1);
+			System.out.println(platform.showAccount("maryia"));
+			System.out.println(platform.showAccount("ashley"));
+			System.out.println(platform.showAccount("dog"));
+			System.out.println(" ");
 			
-			System.out.println("");
-			System.out.println(platform.showAccount("handle1"));
-			System.out.println(platform.showAccount("handle2"));
+			platform.deletePost(dogCommTwo);
 			
+			System.out.println(" ");
+			System.out.println(platform.showAccount("maryia"));
+			System.out.println(platform.showAccount("ashley"));
+			System.out.println(platform.showAccount("dog"));
+			System.out.println(" ");
 
 			platform.removeAccount(id);
-			assert (platform.getNumberOfAccounts() == 1) : "number of accounts registered in the system does not match";
+			assert (platform.getNumberOfAccounts() == 2) : "number of accounts registered in the system does not match";
 		
 		} catch (PostIDNotRecognisedException e){
 			assert (false): "PostIDNotRecognisedException thrown incorrectly";

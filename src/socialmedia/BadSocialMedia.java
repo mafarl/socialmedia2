@@ -209,6 +209,7 @@ public class BadSocialMedia implements SocialMediaPlatform {
 		
 		int sumOfEndors = 0;
 		HashMap<String, ArrayList<Integer>> storageOfPostsFromAccount = listOfAccounts.get(index).getAccountStorage();
+		
 		//Iterate over original
 		for (int eachID : storageOfPostsFromAccount.get("original")){
 			for (Post i : listOfPosts) {
@@ -369,31 +370,82 @@ public class BadSocialMedia implements SocialMediaPlatform {
 		boolean postIsThere = false;
 		int postCounter = 0;
 		for (Post i : listOfPosts) {
+			List<Integer> counters = new ArrayList<>();
 			if (i.getNumIdentifier() == id) {
 				postIsThere = true;
 				Post post = new Post(id);
 				listOfEmptyPosts.add(post);
 				
 				//Remove all its endorsements
-				HashMap<String, ArrayList<Integer>> storage = listOfPosts.get(postCounter).getPostStorage();
-				ArrayList<Integer> value = new ArrayList<>();
-				value = storage.get("endorsements");
+				HashMap<String, ArrayList<Integer>> storagePosts = listOfPosts.get(postCounter).getPostStorage();
+				ArrayList<Integer> value = new ArrayList<Integer>();
+				value = storagePosts.get("endorsements");
+				
+				//Storage with ids of endorsements to delete them from Account storage (copy)
+				ArrayList<Integer> storageOfEndors =  new ArrayList<Integer>();
+				for (int val : value){
+					storageOfEndors.add(val);
+				}
+				
 				value.clear();			
 				
 				//Remove from Account's storage
-				HashMap<String, ArrayList<Integer>> storage = new HashMap<>();
-				storage = .storageOfPostsFromAccount();
-				boolean deleted = false;
-				for "original"
-				
-				if (!deleted){
-					for "comments"
+				for(Account acc : listOfAccounts){
+					HashMap<String, ArrayList<Integer>> storage = new HashMap<>();
+					storage = acc.getAccountStorage();
+					
+					//Iterate over original
+					boolean deleted = false;
+					int counter = 0;
+					for (int orig : storage.get("original")){
+							if (orig == id){
+								storage.get("original").remove(counter);
+								deleted = true;
+								break;
+							}
+							counter++;
+					}
+					//Iterate over comments
+					if (!deleted){
+						counter = 0;
+						for (int comm : storage.get("comments")){
+							if (comm == id){
+								storage.get("comments").remove(counter);
+								break;
+							}
+							counter++;
+						}
+					}
+					//Iterate over endorsements
+					//List<Integer> counters = new ArrayList<>();
+					for (int endor : storage.get("endorsements")){
+						for (int idEndors : storageOfEndors){
+							if (endor == idEndors){
+								counters.add(endor);
+								break;
+							}
+						}
+					}
+					storage.get("endorsements").removeAll(counters);
 				}
-				
-				
-				
+
 				//Remove from the whole listOfPosts (global)
 				listOfPosts.remove(listOfPosts.get(postCounter));
+				
+				//also need to remove endorsemetns from ListOfPosts
+				int counter = 0;
+				ArrayList<Post> indexes = new ArrayList<>();
+				
+				for (Post a : listOfPosts){
+					for (int idInCounters : counters){
+						if (a.getNumIdentifier() == idInCounters){
+							indexes.add(a);
+							break;
+						}
+					}
+					counter++; 						
+				}			
+				listOfPosts.removeAll(indexes);			
 				break;
 			}
 			postCounter++;
@@ -401,13 +453,12 @@ public class BadSocialMedia implements SocialMediaPlatform {
 		//
 		if (!postIsThere){
 			throw new PostIDNotRecognisedException();
-		}
-		
+		}	
 	}
 
 	@Override
 	public String showIndividualPost(int id) throws PostIDNotRecognisedException {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
