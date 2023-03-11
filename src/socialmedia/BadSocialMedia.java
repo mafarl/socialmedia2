@@ -45,50 +45,52 @@ public class BadSocialMedia implements SocialMediaPlatform {
 	
 	/**
 	 * Creates a new account instance with given handle
-	 * Adds it to the list of all accounts
+	 * Adds it to listOfAccounts
 	 * Increments idAccount by 1
 	 */
 	@Override
 	public int createAccount(String handle) throws IllegalHandleException, InvalidHandleException {
 		
-		//Check if already exists
+		// Check if the handle already exists
 		for (Account i : listOfAccounts) {
 			if (i.getHandle().equals(handle)) {
 				throw new IllegalHandleException();
 			}
 		}
-		// Check if valid form
+		
+		// Check if the handle is valid
 		if (handle.isEmpty() || handle.length() > 30 || handle.matches(".*\\s.*")){
 			throw new InvalidHandleException();
 		}
 		
+		// Create a new account object 
 		Account acc = new Account(handle, idAccount);
 		listOfAccounts.add(acc);
-		
 		return idAccount++;
 		
 	}
 
-
 	/**
 	 * Creates a new account instance with the given handle and description
-	 * Adds it to the list of all accounts
+	 * Adds it to listOfAccounts
 	 * Increments idAccount by 1
 	 */
 	@Override
 	public int createAccount(String handle, String description) throws IllegalHandleException, InvalidHandleException {
 		
-		//Check if already exists
+		// Check if the handle already exists
 		for (Account i : listOfAccounts) {
 			if (i.getHandle().equals(handle)) {
 				throw new IllegalHandleException();
 			}
 		}
-		// Check if valid form
+		
+		// Check if the handle is valid
 		if (handle.isEmpty() || handle.length() > 30 || handle.matches(".*\\s.*")){
 			throw new InvalidHandleException();
 		}
 		
+		// Create a new account object 
 		Account acc = new Account(handle, idAccount, description);
 		listOfAccounts.add(acc);
 		return idAccount++;
@@ -96,12 +98,14 @@ public class BadSocialMedia implements SocialMediaPlatform {
 	}
 	
 	/**
-	* Removes an account with the given ID 
-	* 
+	* Removes an account with the given ID from listOfAccounts
+	*
 	*/
 	@Override
 	public void removeAccount(int id) throws AccountIDNotRecognisedException {
+		
 		// Need to remove all posts/endorsements
+		// Finds the account with the given id
 		int counter = 0;
 		boolean isThere = false;
 		for (Account i : listOfAccounts) {
@@ -113,18 +117,21 @@ public class BadSocialMedia implements SocialMediaPlatform {
 			counter++;
 		}
 		
+		// If the id doesn't exist
 		if (!isThere){
 			throw new AccountIDNotRecognisedException();
 		}
 	}
 	
 	/**
-	* Removes an account with the given handle
+	* Removes an account with the given handle from listOfAccounts
 	*
 	*/
 	@Override
 	public void removeAccount(String handle) throws HandleNotRecognisedException {
+		
 		// Need to remove all posts/endorsements
+		// Finds the account with the given handle
 		int counter = 0;
 		boolean isThere = false;
 		for (Account i : listOfAccounts) {
@@ -135,27 +142,32 @@ public class BadSocialMedia implements SocialMediaPlatform {
 			}
 			counter++;
 		}
-		
+		// If the handle doesn't exist
 		if (!isThere){
 			throw new HandleNotRecognisedException();
 		}
 	}
-
+	
+	/**
+	* Replaces an accounts oldHandle with newHandle
+	*/
 	@Override
 	public void changeAccountHandle(String oldHandle, String newHandle)
 			throws HandleNotRecognisedException, IllegalHandleException, InvalidHandleException {
-		//Check if newHandle already exists 
+		
+		// Check if newHandle already exists 
 		for (Account i : listOfAccounts) {
 			if (i.getHandle().equals(newHandle)) {
 				throw new IllegalHandleException();
 			}
 		}
-		//Check if new handle is valid
+		
+		// Check if new handle is valid
 		if (newHandle.isEmpty() || newHandle.length() > 30 || newHandle.matches(".*\\s.*")){
 			throw new InvalidHandleException();
 		}
 			
-		//Find the account that matches oldHandle
+		// Find the account that matches oldHandle
 		boolean isThere = false;
 		for (Account i : listOfAccounts) {
 			if (i.getHandle().equals(oldHandle)){
@@ -165,7 +177,8 @@ public class BadSocialMedia implements SocialMediaPlatform {
 			}
 			
 		}
-		//If the oldHandle doesn't exist
+		
+		// If the oldHandle doesn't exist
 		if (!isThere){
 			throw new HandleNotRecognisedException();
 		}
@@ -175,7 +188,7 @@ public class BadSocialMedia implements SocialMediaPlatform {
 	@Override
 	public void updateAccountDescription(String handle, String description) throws HandleNotRecognisedException {
 		
-		//Find the account that matches oldHandle
+		// Find the account with the given handle
 		boolean isThere = false;
 		for (Account i : listOfAccounts) {
 			if (i.getHandle().equals(handle)){
@@ -184,7 +197,8 @@ public class BadSocialMedia implements SocialMediaPlatform {
 				break;
 			}
 		}
-		//If the handle doesn't exist
+		
+		// If the handle doesn't exist
 		if (!isThere){
 			throw new HandleNotRecognisedException();
 		}	
@@ -193,6 +207,8 @@ public class BadSocialMedia implements SocialMediaPlatform {
 
 	@Override
 	public String showAccount(String handle) throws HandleNotRecognisedException {
+		
+		// Find the account with the given handle
 		boolean isThere = false;
 		int index=0;
 		for (Account i : listOfAccounts) {
@@ -202,15 +218,17 @@ public class BadSocialMedia implements SocialMediaPlatform {
 			}
 			index++;
 		}
-		//If the handle doesn't exist
+		
+		// If the handle doesn't exist
 		if (!isThere){
 			throw new HandleNotRecognisedException();
-		}	
+		}
 		
+		// Getting the posts made by the account
 		int sumOfEndors = 0;
 		HashMap<String, ArrayList<Integer>> storageOfPostsFromAccount = listOfAccounts.get(index).getAccountStorage();
 		
-		//Iterate over original
+		// Iterate over original
 		for (int eachID : storageOfPostsFromAccount.get("original")){
 			for (Post i : listOfPosts) {
 				if (i.getNumIdentifier() == eachID) {
@@ -220,7 +238,7 @@ public class BadSocialMedia implements SocialMediaPlatform {
 			}
 		}
 		
-		//Iterate over comments
+		// Iterate over comments
 		for (int eachID : storageOfPostsFromAccount.get("comments")){
 			for (Post i : listOfPosts) {
 				if (i.getNumIdentifier() == eachID) {
@@ -242,12 +260,13 @@ public class BadSocialMedia implements SocialMediaPlatform {
 
 	@Override
 	public int createPost(String handle, String message) throws HandleNotRecognisedException, InvalidPostException {
-		// Check if valid form
+		
+		// Check if the message is valid
 		if (message.isEmpty() || message.length() > 100){
 			throw new InvalidPostException();
 		}
 		
-		//
+		// Find the account with the given handle and create the post
 		boolean isThere = false;
 		int counter = 0;
 		for (Account i : listOfAccounts) {
@@ -261,7 +280,7 @@ public class BadSocialMedia implements SocialMediaPlatform {
 			counter++;
 		}
 		
-		//
+		// If the handle doesn't exist
 		if (!isThere){
 			throw new HandleNotRecognisedException();
 		}
@@ -272,7 +291,7 @@ public class BadSocialMedia implements SocialMediaPlatform {
 	@Override
 	public int endorsePost(String handle, int id) throws HandleNotRecognisedException, PostIDNotRecognisedException, NotActionablePostException {
 		
-		//
+		// Find the post with the given id
 		boolean postIsThere = false;
 		int postCounter = 0;
 		for (Post i : listOfPosts) {
@@ -286,11 +305,13 @@ public class BadSocialMedia implements SocialMediaPlatform {
 			}
 			postCounter++;
 		}
-		//
+		
+		// If the post doesn't exist
 		if (!postIsThere){
 			throw new PostIDNotRecognisedException();
 		}
 		
+		// Find the account with the given handle
 		boolean isThere = false;
 		int counter = 0;
 		for (Account i : listOfAccounts) {
@@ -304,7 +325,7 @@ public class BadSocialMedia implements SocialMediaPlatform {
 			counter++;
 		}
 		
-		//
+		// If the handle doesn't exist
 		if (!isThere){
 			throw new HandleNotRecognisedException();
 		}
@@ -317,12 +338,12 @@ public class BadSocialMedia implements SocialMediaPlatform {
 	public int commentPost(String handle, int id, String message) throws HandleNotRecognisedException,
 			PostIDNotRecognisedException, NotActionablePostException, InvalidPostException {
 
-		// Check if valid form
+		// Check if the message is valid
 		if (message.isEmpty() || message.length() > 100){
 			throw new InvalidPostException();
 		}
 		
-		//
+		// Find the post with the given id
 		boolean postIsThere = false;
 		int postCounter = 0;
 		for (Post i : listOfPosts) {
@@ -337,11 +358,13 @@ public class BadSocialMedia implements SocialMediaPlatform {
 			}
 			postCounter++;
 		}
-		//
+				
+		// If the post doesn't exist
 		if (!postIsThere){
 			throw new PostIDNotRecognisedException();
 		}
-		
+				
+		// Find the account with the given handle and create the comment
 		boolean isThere = false;
 		int counter = 0;
 		for (Account i : listOfAccounts) {
@@ -355,7 +378,7 @@ public class BadSocialMedia implements SocialMediaPlatform {
 			counter++;
 		}
 		
-		//
+		// If the handle doesn't exist
 		if (!isThere){
 			throw new HandleNotRecognisedException();
 		}
@@ -367,6 +390,7 @@ public class BadSocialMedia implements SocialMediaPlatform {
 	@Override
 	public void deletePost(int id) throws PostIDNotRecognisedException {
 		
+		// Find the post with the given id
 		boolean postIsThere = false;
 		int postCounter = 0;
 		for (Post i : listOfPosts) {
@@ -376,25 +400,27 @@ public class BadSocialMedia implements SocialMediaPlatform {
 				Post post = new Post(id);
 				listOfEmptyPosts.add(post);
 				
-				//Remove all its endorsements
+				// Remove all its endorsements
 				HashMap<String, ArrayList<Integer>> storagePosts = listOfPosts.get(postCounter).getPostStorage();
 				ArrayList<Integer> value = new ArrayList<Integer>();
 				value = storagePosts.get("endorsements");
 				
-				//Storage with ids of endorsements to delete them from Account storage (copy)
+				// Copy of the storage with postIDs of endorsements to delete from Account storage
 				ArrayList<Integer> storageOfEndors =  new ArrayList<Integer>();
 				for (int val : value){
 					storageOfEndors.add(val);
 				}
 				
+				// Deleting all the endorsements from listOfPosts
+				// do after iterating over endorsements?
 				value.clear();			
 				
-				//Remove from Account's storage
+				// Remove from Account's storage
 				for(Account acc : listOfAccounts){
 					HashMap<String, ArrayList<Integer>> storage = new HashMap<>();
 					storage = acc.getAccountStorage();
 					
-					//Iterate over original
+					// Iterate over original
 					boolean deleted = false;
 					int counter = 0;
 					for (int orig : storage.get("original")){
@@ -405,7 +431,8 @@ public class BadSocialMedia implements SocialMediaPlatform {
 							}
 							counter++;
 					}
-					//Iterate over comments
+					
+					// Iterate over comments
 					if (!deleted){
 						counter = 0;
 						for (int comm : storage.get("comments")){
@@ -416,8 +443,9 @@ public class BadSocialMedia implements SocialMediaPlatform {
 							counter++;
 						}
 					}
-					//Iterate over endorsements
-					//List<Integer> counters = new ArrayList<>();
+					
+					// Iterate over endorsements
+					// could we have just done value.clear after this and used storage.get("endorsements")?
 					for (int endor : storage.get("endorsements")){
 						for (int idEndors : storageOfEndors){
 							if (endor == idEndors){
@@ -429,13 +457,14 @@ public class BadSocialMedia implements SocialMediaPlatform {
 					storage.get("endorsements").removeAll(counters);
 				}
 
-				//Remove from the whole listOfPosts (global)
+				// Remove from the whole listOfPosts (global)
 				listOfPosts.remove(listOfPosts.get(postCounter));
 				
-				//also need to remove endorsemetns from ListOfPosts
+				// also need to remove endorsemetns from ListOfPosts
 				int counter = 0;
 				ArrayList<Post> indexes = new ArrayList<>();
 				
+				// Finds the indexes of the endorsements to be removed
 				for (Post a : listOfPosts){
 					for (int idInCounters : counters){
 						if (a.getNumIdentifier() == idInCounters){
@@ -450,7 +479,8 @@ public class BadSocialMedia implements SocialMediaPlatform {
 			}
 			postCounter++;
 		}
-		//
+		
+		// If the post doesn't exist
 		if (!postIsThere){
 			throw new PostIDNotRecognisedException();
 		}	
@@ -458,12 +488,15 @@ public class BadSocialMedia implements SocialMediaPlatform {
 
 	@Override
 	public String showIndividualPost(int id) throws PostIDNotRecognisedException {
+		
+		// Finding the account with the post
 		boolean postIsThere = false;
 		String handle = "";
 		for (Account acc : listOfAccounts){
 			HashMap<String, ArrayList<Integer>> storage = new HashMap<>();
 			storage = acc.getAccountStorage();
-			//look in the original
+			
+			// Search the original
 			for (int orig : storage.get("original")){
 				if (orig == id){
 					handle = acc.getHandle();
@@ -471,7 +504,8 @@ public class BadSocialMedia implements SocialMediaPlatform {
 					break;
 				}
 			}
-			//look in the comments
+			
+			// Search the comments
 			for (int comm : storage.get("comments")){
 				if (comm == id){
 					handle = acc.getHandle();
@@ -479,7 +513,8 @@ public class BadSocialMedia implements SocialMediaPlatform {
 					break;
 				}
 			}
-			//look in the endorsements
+			
+			// Search the endorsements
 			for (int endor : storage.get("endorsements")){
 				if (endor == id){
 					handle = acc.getHandle();
@@ -489,10 +524,12 @@ public class BadSocialMedia implements SocialMediaPlatform {
 			}
 		}
 		
+		// If the post doesn't exist
 		if (!postIsThere){
 				throw new PostIDNotRecognisedException();
 		}
 		
+		// Finds the index of the post in listOfPosts
 		int indexNeededPost=0;
 		for (Post post : listOfPosts){
 			if (post.getNumIdentifier() == id){
@@ -501,14 +538,17 @@ public class BadSocialMedia implements SocialMediaPlatform {
 			}
 		}
 		
+		// Gets the number of endorsements the post has received
 		ArrayList<Integer> postStorageEnd = new ArrayList<>();
 		postStorageEnd = listOfPosts.get(indexNeededPost).getPostStorage().get("endorsements");
 		int noEndor = postStorageEnd.size();
 		
+		// Gets the number of comments the post has received
 		ArrayList<Integer> postStorageComm = new ArrayList<>();
 		postStorageComm = listOfPosts.get(indexNeededPost).getPostStorage().get("comments");
 		int noComm = postStorageComm.size();
 		
+		// Gets the message of the post
 		String message = listOfPosts.get(indexNeededPost).getMessage();
 		
 		return String.format("ID: %d%n Account: %s%n No.endorsements: %d|No.comments: %d%n %s", id, handle, noEndor, noComm, message);
