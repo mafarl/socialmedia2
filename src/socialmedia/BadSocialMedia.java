@@ -389,7 +389,6 @@ public class BadSocialMedia implements SocialMediaPlatform {
 			if (i.getNumIdentifier() == id) {
 				postIsThere = true;
 				if (listOfPosts.get(postCounter).getMessage() == null){
-					System.out.println("Comment exception");
 					throw new NotActionablePostException();
 				}
 				listOfPosts.get(postCounter).addToPostStorageComment(idPost);
@@ -441,22 +440,23 @@ public class BadSocialMedia implements SocialMediaPlatform {
 				
 				//If comm or endors, remove it from the post it was done on
 				
-				boolean isOriginal = false;
-				if (i.getPointerToOriginal() == null) {
-					isOriginal = true;
+				boolean isOriginal = true;
+				Object obj = i.getPointerToOriginal();
+				if (obj instanceof Integer) {
+					isOriginal = false;
 				}
 				if (!isOriginal) {
 					for (Post postmain : listOfPosts) {
 						if (postmain.getNumIdentifier() == i.getPointerToOriginal()) {
-							HashMap<String, ArrayList<Integer>> postMainStorage = postmain.getPostStorage;
-							postMainStorage.get("comments").removeAll(List.of(id));
-							postMainStorage.get("endorsements").removeAll(List.of(id));
+							HashMap<String, ArrayList<Integer>> postMainStorage = postmain.getPostStorage();
+							ArrayList<Integer> idList = new ArrayList<>();
+							idList.add(id);
+							postMainStorage.get("comments").removeAll(idList);
+							postMainStorage.get("endorsements").removeAll(idList);
 							
 						}
 					}
 				}
-				
-				
 				
 				// Remove all its endorsements
 				HashMap<String, ArrayList<Integer>> storagePosts = listOfPosts.get(postCounter).getPostStorage();
