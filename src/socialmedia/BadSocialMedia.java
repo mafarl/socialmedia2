@@ -439,6 +439,25 @@ public class BadSocialMedia implements SocialMediaPlatform {
 				Post post = new Post(id);
 				listOfEmptyPosts.add(post);
 				
+				//If comm or endors, remove it from the post it was done on
+				
+				boolean isOriginal = false;
+				if (i.getPointerToOriginal() == null) {
+					isOriginal = true;
+				}
+				if (!isOriginal) {
+					for (Post postmain : listOfPosts) {
+						if (postmain.getNumIdentifier() == i.getPointerToOriginal()) {
+							HashMap<String, ArrayList<Integer>> postMainStorage = postmain.getPostStorage;
+							postMainStorage.get("comments").removeAll(List.of(id));
+							postMainStorage.get("endorsements").removeAll(List.of(id));
+							
+						}
+					}
+				}
+				
+				
+				
 				// Remove all its endorsements
 				HashMap<String, ArrayList<Integer>> storagePosts = listOfPosts.get(postCounter).getPostStorage();
 				ArrayList<Integer> value = new ArrayList<Integer>();
