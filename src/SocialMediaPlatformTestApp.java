@@ -53,6 +53,7 @@ public class SocialMediaPlatformTestApp {
 			int ashleyEndorThree = platform.endorsePost("ashley",dogCommTwo);
 			int maryiaEndroFour = platform.endorsePost("maryia",dogCommTwo);
 			int maryiacommFive = platform.commentPost("maryia",ashleyOrigOne,"First comment");
+			//int dogEndorSix = platform.endorsePost("dog",maryiaOrigZero);
 			
 			
 			System.out.println(platform.showAccount("maryia"));
@@ -66,16 +67,26 @@ public class SocialMediaPlatformTestApp {
 			System.out.println(" ");
 			
 			platform.deletePost(dogCommTwo);
-			System.out.println(platform.showIndividualPost(dogCommTwo));
 			
 			
 			System.out.println(" ");
 			System.out.println(platform.showAccount("maryia"));
+			
 			System.out.println(platform.showAccount("ashley"));
 			System.out.println(platform.showAccount("dog"));
 			System.out.println(" ");
-
-			platform.removeAccount(id);
+			System.out.println(" ");
+			System.out.println(" ");
+			
+			System.out.println("Post before deleting dog");
+			System.out.println(platform.showIndividualPost(maryiaOrigZero));
+			platform.removeAccount(id3);
+			System.out.println("Post after deleting dog");
+			System.out.println(platform.showIndividualPost(maryiaOrigZero));
+			System.out.println("accounts");
+			System.out.println(platform.showAccount("maryia"));
+			System.out.println(platform.showAccount("ashley")); 
+			
 			assert (platform.getNumberOfAccounts() == 2) : "number of accounts registered in the system does not match";
 		
 		} catch (PostIDNotRecognisedException e){
