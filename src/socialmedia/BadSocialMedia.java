@@ -108,8 +108,42 @@ public class BadSocialMedia implements SocialMediaPlatform {
 		// Finds the account with the given id
 		int counter = 0;
 		boolean isThere = false;
-		for (Account i : listOfAccounts) {
-			if (i.getID() == id) {
+		for (Account acc : listOfAccounts) {
+			if (acc.getID() == id) {
+				
+				//
+				HashMap<String, ArrayList<Integer>> storage = new HashMap<>();
+				storage = acc.getAccountStorage();
+				ArrayList<Integer> origposts = new ArrayList<Integer>();
+				ArrayList<Integer> commposts = new ArrayList<Integer>();
+				ArrayList<Integer> endorposts = new ArrayList<Integer>();
+				origposts = storage.get("original");
+				commposts = storage.get("comments");
+				endorposts = storage.get("endorsements");
+				ArrayList<Integer> listOfPostsToDelete = new ArrayList<>();
+
+				for (int post : origposts) {
+					listOfPostsToDelete.add(post);
+				}
+
+				for (int post : commposts) {
+					listOfPostsToDelete.add(post);
+				}
+			
+				for (int post : endorposts) {
+					listOfPostsToDelete.add(post);
+				}
+				
+				
+				for (int i : listOfPostsToDelete) {
+					
+					try {
+					deletePost(i);
+					}
+					catch(PostIDNotRecognisedException e){}
+				}
+				
+				
 				listOfAccounts.remove(counter);
 				isThere = true;
 				break;
@@ -121,6 +155,11 @@ public class BadSocialMedia implements SocialMediaPlatform {
 		if (!isThere){
 			throw new AccountIDNotRecognisedException();
 		}
+		
+		
+		
+		
+		
 	}
 	
 	/**
@@ -350,7 +389,6 @@ public class BadSocialMedia implements SocialMediaPlatform {
 			if (i.getNumIdentifier() == id) {
 				postIsThere = true;
 				if (listOfPosts.get(postCounter).getMessage() == null){
-					System.out.println("Comment exception");
 					throw new NotActionablePostException();
 				}
 				listOfPosts.get(postCounter).addToPostStorageComment(idPost);
@@ -399,6 +437,26 @@ public class BadSocialMedia implements SocialMediaPlatform {
 				postIsThere = true;
 				Post post = new Post(id);
 				listOfEmptyPosts.add(post);
+				
+				//If comm or endors, remove it from the post it was done on
+				
+				boolean isOriginal = true;
+				Object obj = i.getPointerToOriginal();
+				if (obj instanceof Integer) {
+					isOriginal = false;
+				}
+				if (!isOriginal) {
+					for (Post postmain : listOfPosts) {
+						if (postmain.getNumIdentifier() == i.getPointerToOriginal()) {
+							HashMap<String, ArrayList<Integer>> postMainStorage = postmain.getPostStorage();
+							ArrayList<Integer> idList = new ArrayList<>();
+							idList.add(id);
+							postMainStorage.get("comments").removeAll(idList);
+							postMainStorage.get("endorsements").removeAll(idList);
+							
+						}
+					}
+				}
 				
 				// Remove all its endorsements
 				HashMap<String, ArrayList<Integer>> storagePosts = listOfPosts.get(postCounter).getPostStorage();
