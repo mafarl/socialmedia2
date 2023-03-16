@@ -10,6 +10,7 @@ import socialmedia.SocialMediaPlatform;
 import socialmedia.Account;
 import socialmedia.Post;
 import java.util.*;
+import java.io.*;
 
 /**
  * A short program to illustrate an app testing some minimal functionality of a
@@ -53,41 +54,14 @@ public class SocialMediaPlatformTestApp {
 			int ashleyEndorThree = platform.endorsePost("ashley",dogCommTwo);
 			int maryiaEndroFour = platform.endorsePost("maryia",dogCommTwo);
 			int maryiacommFive = platform.commentPost("maryia",ashleyOrigOne,"First comment");
-			//int dogEndorSix = platform.endorsePost("dog",maryiaOrigZero);
+			int dogEndorSix = platform.endorsePost("dog",maryiaOrigZero);
+			int ashleyCommSeven = platform.commentPost("maryia",dogCommTwo,"Comment to dog's comment to maryia's orig post");
+			//int ashleyEndorEight = platform.endorsePost("ashley",maryiaOrigZero);
 			
-			System.out.println("ACCOUNTS INITIALLY");
-			System.out.println(platform.showAccount("maryia"));
-			System.out.println(platform.showAccount("ashley"));
-			System.out.println(platform.showAccount("dog"));
-			System.out.println(" ");
-			
-			/* System.out.println(platform.showIndividualPost(ashleyOrigOne));
-			System.out.println(" ");
-			System.out.println(platform.showIndividualPost(dogCommTwo));
-			System.out.println(" "); */
-			
-			//platform.deletePost(dogCommTwo);
-			
-			
-			System.out.println(" ");
-			/*System.out.println("ACCOUNTS AFTER DELETING DOG'S COMMENT");
-			System.out.println(platform.showAccount("maryia"));
-			System.out.println(platform.showAccount("ashley"));
-			System.out.println(platform.showAccount("dog")); */
-			System.out.println(" ");
-			System.out.println(" ");
-			System.out.println(" ");
-			
-			System.out.println("Post before deleting dog");
-			System.out.println(platform.showIndividualPost(maryiaOrigZero));
-			platform.removeAccount(id3);
-			System.out.println("Post after deleting dog");
-			System.out.println(platform.showIndividualPost(maryiaOrigZero));
-			System.out.println("accounts");
-			System.out.println(platform.showAccount("maryia"));
-			System.out.println(platform.showAccount("ashley")); 
-			
-			assert (platform.getNumberOfAccounts() == 2) : "number of accounts registered in the system does not match";
+
+			platform.loadPlatform("saved.ser");
+
+			assert (platform.getNumberOfAccounts() == 3) : "number of accounts registered in the system does not match";
 		
 		} catch (PostIDNotRecognisedException e){
 			assert (false): "PostIDNotRecognisedException thrown incorrectly";
@@ -101,8 +75,13 @@ public class SocialMediaPlatformTestApp {
 			assert (false) : "IllegalHandleException thrown incorrectly";
 		} catch (InvalidHandleException e) {
 			assert (false) : "InvalidHandleException thrown incorrectly";
-		} catch (AccountIDNotRecognisedException e) {
-			assert (false) : "AccountIDNotRecognizedException thrown incorrectly";
+		} //catch (AccountIDNotRecognisedException e) {
+			//assert (false) : "AccountIDNotRecognizedException thrown incorrectly";
+		//}
+		catch (IOException e){
+			assert (false) : "IOException";
+		} catch (ClassNotFoundException e){
+			assert (false) : "ClassNotFoundException thrown incorrectly";
 		}
 
 	}

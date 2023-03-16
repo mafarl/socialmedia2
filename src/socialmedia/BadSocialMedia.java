@@ -1,7 +1,7 @@
 package socialmedia;
 
 import java.util.*;
-import java.io.IOException;
+import java.io.*;
 
 /**
  * BadSocialMedia is a minimally compiling, but non-functioning implementor of
@@ -17,8 +17,6 @@ public class BadSocialMedia implements SocialMediaPlatform {
 	private ArrayList<Post> listOfEmptyPosts = new ArrayList<>();
 	private int idAccount = 0;
 	private int idPost = 0;
-	// 0 - original, 1 - comments, 2 - endorsements
-	private int[] numberOfPosts = new int[]{0,0,0};
 	
 	// getters
 	public ArrayList<Account> getAccounts() {
@@ -138,7 +136,7 @@ public class BadSocialMedia implements SocialMediaPlatform {
 				for (int i : listOfPostsToDelete) {
 					
 					try {
-					deletePost(i);
+						deletePost(i);
 					}
 					catch(PostIDNotRecognisedException e){}
 				}
@@ -154,12 +152,7 @@ public class BadSocialMedia implements SocialMediaPlatform {
 		// If the id doesn't exist
 		if (!isThere){
 			throw new AccountIDNotRecognisedException();
-		}
-		
-		
-		
-		
-		
+		}	
 	}
 	
 	/**
@@ -173,8 +166,40 @@ public class BadSocialMedia implements SocialMediaPlatform {
 		// Finds the account with the given handle
 		int counter = 0;
 		boolean isThere = false;
-		for (Account i : listOfAccounts) {
-			if (i.getHandle() == handle) {
+		for (Account acc : listOfAccounts) {
+			if (acc.getHandle() == handle) {
+				
+				HashMap<String, ArrayList<Integer>> storage = new HashMap<>();
+				storage = acc.getAccountStorage();
+				ArrayList<Integer> origposts = new ArrayList<Integer>();
+				ArrayList<Integer> commposts = new ArrayList<Integer>();
+				ArrayList<Integer> endorposts = new ArrayList<Integer>();
+				origposts = storage.get("original");
+				commposts = storage.get("comments");
+				endorposts = storage.get("endorsements");
+				ArrayList<Integer> listOfPostsToDelete = new ArrayList<>();
+
+				for (int post : origposts) {
+					listOfPostsToDelete.add(post);
+				}
+
+				for (int post : commposts) {
+					listOfPostsToDelete.add(post);
+				}
+			
+				for (int post : endorposts) {
+					listOfPostsToDelete.add(post);
+				}
+				
+				
+				for (int i : listOfPostsToDelete) {
+					
+					try {
+						deletePost(i);
+					}
+					catch(PostIDNotRecognisedException e){}
+				}
+				
 				listOfAccounts.remove(counter);
 				isThere = true;
 				break;
@@ -331,15 +356,17 @@ public class BadSocialMedia implements SocialMediaPlatform {
 	public int endorsePost(String handle, int id) throws HandleNotRecognisedException, PostIDNotRecognisedException, NotActionablePostException {
 		
 		// Find the post with the given id
+		String message="";
 		boolean postIsThere = false;
 		int postCounter = 0;
 		for (Post i : listOfPosts) {
 			if (i.getNumIdentifier() == id) {
 				postIsThere = true;
-				if (listOfPosts.get(postCounter).getMessage() == null){
+				if (listOfPosts.get(postCounter).getPostStorage() == null){
 					throw new NotActionablePostException();
 				}
 				listOfPosts.get(postCounter).addToPostStorageEndors(idPost);
+				message = i.getMessage();
 				break;
 			}
 			postCounter++;
@@ -357,6 +384,7 @@ public class BadSocialMedia implements SocialMediaPlatform {
 			if (i.getHandle() == handle) {
 				listOfAccounts.get(counter).addToAccountStorageEndors(idPost);
 				Post post = new Post(idPost, id);
+				post.setMessage(message);
 				listOfPosts.add(post);
 				isThere = true;
 				break;
@@ -388,7 +416,7 @@ public class BadSocialMedia implements SocialMediaPlatform {
 		for (Post i : listOfPosts) {
 			if (i.getNumIdentifier() == id) {
 				postIsThere = true;
-				if (listOfPosts.get(postCounter).getMessage() == null){
+				if (listOfPosts.get(postCounter).getPostStorage() == null){
 					throw new NotActionablePostException();
 				}
 				listOfPosts.get(postCounter).addToPostStorageComment(idPost);
@@ -427,7 +455,7 @@ public class BadSocialMedia implements SocialMediaPlatform {
 
 	@Override
 	public void deletePost(int id) throws PostIDNotRecognisedException {
-		
+
 		// Find the post with the given id
 		boolean postIsThere = false;
 		int postCounter = 0;
@@ -440,10 +468,9 @@ public class BadSocialMedia implements SocialMediaPlatform {
 				
 				//If comm or endors, remove it from the post it was done on
 				
-				boolean isOriginal = true;
-				Object obj = i.getPointerToOriginal();
-				if (obj instanceof Integer) {
-					isOriginal = false;
+				boolean isOriginal = false;
+				if (i.getPointerToOriginal() == -1) {
+					isOriginal = true;
 				}
 				if (!isOriginal) {
 					for (Post postmain : listOfPosts) {
@@ -453,25 +480,28 @@ public class BadSocialMedia implements SocialMediaPlatform {
 							idList.add(id);
 							postMainStorage.get("comments").removeAll(idList);
 							postMainStorage.get("endorsements").removeAll(idList);
-							
 						}
 					}
 				}
 				
-				// Remove all its endorsements
-				HashMap<String, ArrayList<Integer>> storagePosts = listOfPosts.get(postCounter).getPostStorage();
-				ArrayList<Integer> value = new ArrayList<Integer>();
-				value = storagePosts.get("endorsements");
-				
-				// Copy of the storage with postIDs of endorsements to delete from Account storage
-				ArrayList<Integer> storageOfEndors =  new ArrayList<Integer>();
-				for (int val : value){
-					storageOfEndors.add(val);
+				if (listOfPosts.get(postCounter).getPostStorage() != null){
+					// Remove all its endorsements
+					HashMap<String, ArrayList<Integer>> storagePosts = listOfPosts.get(postCounter).getPostStorage();
+					ArrayList<Integer> value = new ArrayList<Integer>();
+					
+					value = storagePosts.get("endorsements");
+					
+					// Copy of the storage with postIDs of endorsements to delete from Account storage
+					ArrayList<Integer> storageOfEndors =  new ArrayList<Integer>();
+					for (int val : value){
+						storageOfEndors.add(val);
+					}
+					
+					// Deleting all the endorsements from listOfPosts
+					// do after iterating over endorsements?
+					value.clear();	
 				}
-				
-				// Deleting all the endorsements from listOfPosts
-				// do after iterating over endorsements?
-				value.clear();			
+						
 				
 				// Remove from Account's storage
 				for(Account acc : listOfAccounts){
@@ -496,23 +526,45 @@ public class BadSocialMedia implements SocialMediaPlatform {
 						for (int comm : storage.get("comments")){
 							if (comm == id){
 								storage.get("comments").remove(counter);
+								deleted = true;
 								break;
 							}
 							counter++;
 						}
 					}
 					
-					// Iterate over endorsements
-					// could we have just done value.clear after this and used storage.get("endorsements")?
-					for (int endor : storage.get("endorsements")){
-						for (int idEndors : storageOfEndors){
-							if (endor == idEndors){
-								counters.add(endor);
+					// Iterate over comments
+					if (!deleted){
+						counter = 0;
+						for (int endors : storage.get("endorsements")){
+							if (endors == id){
+								storage.get("endorsements").remove(counter);
 								break;
 							}
+							counter++;
 						}
 					}
-					storage.get("endorsements").removeAll(counters);
+					
+					if (listOfPosts.get(postCounter).getPostStorage() != null){
+						// Remove all its endorsements
+						HashMap<String, ArrayList<Integer>> storagePosts = listOfPosts.get(postCounter).getPostStorage();
+						ArrayList<Integer> value = new ArrayList<Integer>();
+						
+						value = storagePosts.get("endorsements");
+						ArrayList<Integer> storageOfEndors =  new ArrayList<Integer>();
+						// Iterate over endorsements
+						// could we have just done value.clear after this and used storage.get("endorsements")?
+						for (int endor : storage.get("endorsements")){
+							for (int idEndors : storageOfEndors){
+								if (endor == idEndors){
+									counters.add(endor);
+									break;
+								}
+							}
+						}
+						storage.get("endorsements").removeAll(counters);
+					}
+					
 				}
 
 				// Remove from the whole listOfPosts (global)
@@ -537,7 +589,7 @@ public class BadSocialMedia implements SocialMediaPlatform {
 			}
 			postCounter++;
 		}
-		
+
 		// If the post doesn't exist
 		if (!postIsThere){
 			throw new PostIDNotRecognisedException();
@@ -596,6 +648,11 @@ public class BadSocialMedia implements SocialMediaPlatform {
 			}
 		}
 		
+		if (listOfPosts.get(indexNeededPost).getPostStorage() == null){
+			String message = listOfPosts.get(indexNeededPost).getMessage();
+			return String.format("ID: %d%n Account: %s%n No.endorsements: %d|No.comments: %d%n %s", id, handle, 0, 0, message);
+		}
+		
 		// Gets the number of endorsements the post has received
 		ArrayList<Integer> postStorageEnd = new ArrayList<>();
 		postStorageEnd = listOfPosts.get(indexNeededPost).getPostStorage().get("endorsements");
@@ -615,44 +672,151 @@ public class BadSocialMedia implements SocialMediaPlatform {
 	@Override
 	public StringBuilder showPostChildrenDetails(int id)
 			throws PostIDNotRecognisedException, NotActionablePostException {
-		// TODO Auto-generated method stub
-		return null;
+		
+		boolean postIsThere = false;
+		StringBuilder str = new StringBuilder();
+		
+		for (Post initialPost : listOfPosts){
+			if (initialPost.getNumIdentifier() == id){
+				
+				// Check if the post is an endorsement
+				if (initialPost.getPostStorage() == null){
+					throw new NotActionablePostException();
+				}
+				
+				postIsThere = true;
+				str.append("\n| \n| > ").append(showIndividualPost(id));
+				
+				// Gets children of initial post
+				ArrayList<Integer> initialPostStorageComm = new ArrayList<>();
+				initialPostStorageComm = initialPost.getPostStorage().get("comments");
+				
+				
+				
+				
+					
+				for (Integer childPostID : initialPostStorageComm){
+					ArrayList<Integer> storage = new ArrayList<>();
+					storage = initialPost.getPostStorage().get("comments");
+					if (!storage.isEmpty()){
+						str.append(showPostChildrenDetails(childPostID));
+					}else{
+						str.append(showIndividualPost(childPostID));
+					}
+				}
+					
+			}
+		}
+		
+		// If the post doesn't exist
+		if (!postIsThere){
+				throw new PostIDNotRecognisedException();
+		}
+		
+		return str;
 	}
 
 	@Override
 	public int getNumberOfAccounts() {
-		// TODO Auto-generated method stub
 		return listOfAccounts.size();
 	}
 
 	@Override
 	public int getTotalOriginalPosts() {
-		// TODO Auto-generated method stub
-		return 0;
+		
+		int sumPosts = 0;
+		
+		for (Post post : listOfPosts){
+			if (post.getPointerToOriginal() == -1){
+				sumPosts++;
+			}
+		}
+		return sumPosts;
 	}
 
 	@Override
 	public int getTotalEndorsmentPosts() {
-		// TODO Auto-generated method stub
-		return 0;
+		
+		int sumPosts = 0;
+		
+		for (Post post : listOfPosts){
+			if (post.getPostStorage() == null){
+				sumPosts++;
+			}
+		}
+		return sumPosts;
 	}
 
 	@Override
 	public int getTotalCommentPosts() {
-		// TODO Auto-generated method stub
-		return 0;
+		
+		int sumPosts = 0;
+		
+		for (Post post : listOfPosts){
+			if (post.getPostStorage() != null && post.getPointerToOriginal() != -1){
+				sumPosts++;
+			}
+		}
+		return sumPosts;
 	}
 
 	@Override
 	public int getMostEndorsedPost() {
-		// TODO Auto-generated method stub
-		return 0;
+		
+		int max = 0;
+		int idPost = 0;
+		
+		for (Post post : listOfPosts){
+			HashMap<String, ArrayList<Integer>> storagePosts = post.getPostStorage();
+			ArrayList<Integer> storageEndors = new ArrayList<Integer>();
+			if (post.getPostStorage() != null){
+				storageEndors = storagePosts.get("endorsements");
+				
+				if (storageEndors.size() > max){
+					max = storageEndors.size();
+					idPost = post.getNumIdentifier();
+				}
+			}
+		}
+		return idPost;
 	}
 
 	@Override
 	public int getMostEndorsedAccount() {
-		// TODO Auto-generated method stub
-		return 0;
+		int max = 0;
+		int idAcccount = 0;
+		for (Account acc : listOfAccounts){
+			
+			// Getting the posts made by the account
+			int sumOfEndors = 0;
+			HashMap<String, ArrayList<Integer>> storageOfPostsFromAccount = acc.getAccountStorage();
+			
+			// Iterate over original
+			for (int eachID : storageOfPostsFromAccount.get("original")){
+				for (Post i : listOfPosts) {
+					if (i.getNumIdentifier() == eachID) {
+						HashMap<String, ArrayList<Integer>> storageOfPostsFromPost = i.getPostStorage();
+						sumOfEndors+=storageOfPostsFromPost.get("endorsements").size();
+					}
+				}
+			}
+			
+			// Iterate over comments
+			for (int eachID : storageOfPostsFromAccount.get("comments")){
+				for (Post i : listOfPosts) {
+					if (i.getNumIdentifier() == eachID) {
+						HashMap<String, ArrayList<Integer>> storageOfPostsFromPost = i.getPostStorage();
+						sumOfEndors+=storageOfPostsFromPost.get("endorsements").size();
+					}
+				}
+			}
+			
+			if (sumOfEndors > max){
+				max = sumOfEndors;
+				idAccount = acc.getID();
+			}
+		}
+		return idAccount;
 	}
 
 	@Override
@@ -663,13 +827,34 @@ public class BadSocialMedia implements SocialMediaPlatform {
 
 	@Override
 	public void savePlatform(String filename) throws IOException {
-		// TODO Auto-generated method stub
-
+		String filenameEdit = filename + ".ser";
+		System.out.println("not before try");
+		try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(filenameEdit))) {
+			System.out.println("not after try");
+			out.writeObject(listOfAccounts);
+			System.out.println("not after listOfAccounts");
+			out.writeObject(listOfPosts);
+			out.writeObject(listOfEmptyPosts);
+			out.writeObject(idAccount);
+			out.writeObject(idPost);
+			System.out.printf("Saved in %s%n",filenameEdit);
+		}
 	}
 
 	@Override
 	public void loadPlatform(String filename) throws IOException, ClassNotFoundException {
-		// TODO Auto-generated method stub
+		ArrayList<Integer> e1 = null,e2 = null;
+		try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(filename))) {
+			 Object obj = in.readObject();
+			 if (obj instanceof ArrayList)
+			   e1 = (ArrayList<Integer>) obj;//downcast safely
+			 obj = in.readObject();
+			 if (obj instanceof ArrayList)
+			   e2 = (ArrayList<Integer>) obj;//downcast safely
+		}
+		System.out.println("Read two first things...");
+		System.out.println(e1);//check what the salary is
+		System.out.println(e2);
 
 	}
 
