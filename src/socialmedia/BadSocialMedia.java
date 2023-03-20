@@ -713,7 +713,13 @@ public class BadSocialMedia implements SocialMediaPlatform {
 				throw new PostIDNotRecognisedException();
 		}
 		
+		StringBuilder str = showChildPostsHelper(idPost, 0)
+		
 		return str;
+	}
+	
+	public String showChildPostsHelper(int id, int indentLevel){
+		
 	}
 
 	@Override
