@@ -1,7 +1,8 @@
 package socialmedia;
 import java.util.*;
+import java.io.Serializable;
 
-public class Post{
+public class Post implements Serializable{
 	
 	// attributes
 	private int numIdentifier;
@@ -38,6 +39,9 @@ public class Post{
 		storage.put("endorsements", value);
 		
 	}
+	public void setMessage(String message){
+		this.message = message;
+	}
 	
 	// constructor
 	// original
@@ -46,6 +50,7 @@ public class Post{
 		this.numIdentifier = numIdentifier;
 		this.message = message;
 		storage = new HashMap<String, ArrayList<Integer>>();
+		pointerToOriginal = -1;
 		// endorsements - the no. endorsements the post has
 		// comments - the no. comments the post has
 		storage.put("comments", new ArrayList<Integer>());
@@ -68,6 +73,7 @@ public class Post{
 	public Post(int numIdentifier,int pointerToOriginal){
 		this.numIdentifier = numIdentifier;
 		this.pointerToOriginal = pointerToOriginal;
+		message = new String();
 	}
 	
 	//empty 
