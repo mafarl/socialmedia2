@@ -690,11 +690,20 @@ public class BadSocialMedia implements SocialMediaPlatform {
 				// Gets children of initial post
 				ArrayList<Integer> initialPostStorageComm = new ArrayList<>();
 				initialPostStorageComm = initialPost.getPostStorage().get("comments");
+				Map<Integer,ArrayList<Integer>> tree  = new HashMap<Integer,ArrayList<Integer>>();
+				for (Integer childPostID : initialPostStorageComm){
+					for (Post post : listOfPosts){
+						if (childPostID == post.getNumIdentifier()){
+							tree.put(childPostID, post.getPostStorage().get("comments"));
+						}
+					}
+				}
+				for (Map.Entry<Integer,ArrayList<Integer>> entry : tree.entrySet()) {
+					str.append("\n  | \n  | > ").append(showIndividualPost(entry.getKey()).indent(2));
+				}
 				
 				
-				
-				
-					
+				/*	
 				for (Integer childPostID : initialPostStorageComm){
 					ArrayList<Integer> storage = new ArrayList<>();
 					storage = initialPost.getPostStorage().get("comments");
@@ -703,7 +712,7 @@ public class BadSocialMedia implements SocialMediaPlatform {
 					}else{
 						str.append(showIndividualPost(childPostID));
 					}
-				}
+				}*/
 					
 			}
 		}

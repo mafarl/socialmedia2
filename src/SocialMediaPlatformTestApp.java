@@ -58,6 +58,7 @@ public class SocialMediaPlatformTestApp {
 			int ashleyCommSeven = platform.commentPost("maryia",dogCommTwo,"Comment to dog's comment to maryia's orig post");
 			//int ashleyEndorEight = platform.endorsePost("ashley",maryiaOrigZero);
 			
+			System.out.println(platform.showPostChildrenDetails(maryiaOrigZero));
 
 			platform.loadPlatform("saved.ser");
 
@@ -78,7 +79,7 @@ public class SocialMediaPlatformTestApp {
 		} //catch (AccountIDNotRecognisedException e) {
 			//assert (false) : "AccountIDNotRecognizedException thrown incorrectly";
 		//}
-		catch (IOException e){
+		  catch (IOException e){
 			assert (false) : "IOException";
 		} catch (ClassNotFoundException e){
 			assert (false) : "ClassNotFoundException thrown incorrectly";
