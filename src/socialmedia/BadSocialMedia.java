@@ -683,28 +683,7 @@ public class BadSocialMedia implements SocialMediaPlatform {
 				if (initialPost.getPostStorage() == null){
 					throw new NotActionablePostException();
 				}
-				
 				postIsThere = true;
-				str.append("\n| \n| > ").append(showIndividualPost(id));
-				
-				// Gets children of initial post
-				ArrayList<Integer> initialPostStorageComm = new ArrayList<>();
-				initialPostStorageComm = initialPost.getPostStorage().get("comments");
-				
-				
-				
-				
-					
-				for (Integer childPostID : initialPostStorageComm){
-					ArrayList<Integer> storage = new ArrayList<>();
-					storage = initialPost.getPostStorage().get("comments");
-					if (!storage.isEmpty()){
-						str.append(showPostChildrenDetails(childPostID));
-					}else{
-						str.append(showIndividualPost(childPostID));
-					}
-				}
-					
 			}
 		}
 		
@@ -713,13 +692,46 @@ public class BadSocialMedia implements SocialMediaPlatform {
 				throw new PostIDNotRecognisedException();
 		}
 		
-		StringBuilder str = showChildPostsHelper(idPost, 0)
-		
+		str = showChildPostsHelper(id, 0);
+		str.delete(0,5);
 		return str;
 	}
 	
-	public String showChildPostsHelper(int id, int indentLevel){
+	public StringBuilder showChildPostsHelper(int id, int indentLevel) throws PostIDNotRecognisedException{
+		StringBuilder str2 = new StringBuilder();
+		boolean postIsThere2 = false;
+		String stickthing = new String("|");
 		
+		for (Post initialPost : listOfPosts){
+			if (initialPost.getNumIdentifier() == id){
+				postIsThere2 = true;
+
+				str2.append((stickthing.indent(indentLevel)));
+				str2.append(("| > "+showIndividualPost(id)).indent(indentLevel));
+				
+				// Gets children of initial post
+				ArrayList<Integer> initialPostStorageComm = new ArrayList<>();
+				initialPostStorageComm = initialPost.getPostStorage().get("comments");
+				
+				for (Integer childPostID : initialPostStorageComm){
+						ArrayList<Integer> storage = new ArrayList<>();
+						storage = initialPost.getPostStorage().get("comments");
+						if (!storage.isEmpty()){
+							str2.append(showChildPostsHelper(childPostID, indentLevel + 4));
+						}else{
+							str2.append((stickthing.indent(indentLevel)));
+							str2.append(("| > "+showIndividualPost(childPostID)).indent(indentLevel));
+						}
+					}
+		
+			}
+		}
+		if (!postIsThere2){
+			System.out.println(str2);
+			throw new PostIDNotRecognisedException();
+		}
+		
+		return str2;
 	}
 
 	@Override
@@ -790,7 +802,7 @@ public class BadSocialMedia implements SocialMediaPlatform {
 	@Override
 	public int getMostEndorsedAccount() {
 		int max = 0;
-		int idAcccount = 0;
+		int idOfAccount = 0;
 		for (Account acc : listOfAccounts){
 			
 			// Getting the posts made by the account
@@ -819,26 +831,26 @@ public class BadSocialMedia implements SocialMediaPlatform {
 			
 			if (sumOfEndors > max){
 				max = sumOfEndors;
-				idAccount = acc.getID();
+				idOfAccount = acc.getID();
 			}
 		}
-		return idAccount;
+		return idOfAccount;
 	}
 
 	@Override
 	public void erasePlatform() {
-		// TODO Auto-generated method stub
-
+		listOfAccounts.clear();
+		listOfPosts.clear();
+		listOfEmptyPosts.clear();
+		idAccount = 0;
+		idPost = 0;
 	}
 
 	@Override
 	public void savePlatform(String filename) throws IOException {
 		String filenameEdit = filename + ".ser";
-		System.out.println("not before try");
 		try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(filenameEdit))) {
-			System.out.println("not after try");
 			out.writeObject(listOfAccounts);
-			System.out.println("not after listOfAccounts");
 			out.writeObject(listOfPosts);
 			out.writeObject(listOfEmptyPosts);
 			out.writeObject(idAccount);
@@ -851,16 +863,24 @@ public class BadSocialMedia implements SocialMediaPlatform {
 	public void loadPlatform(String filename) throws IOException, ClassNotFoundException {
 		ArrayList<Integer> e1 = null,e2 = null;
 		try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(filename))) {
-			 Object obj = in.readObject();
-			 if (obj instanceof ArrayList)
-			   e1 = (ArrayList<Integer>) obj;//downcast safely
-			 obj = in.readObject();
-			 if (obj instanceof ArrayList)
-			   e2 = (ArrayList<Integer>) obj;//downcast safely
+			Object obj = in.readObject();
+			if (obj instanceof ArrayList)
+			  listOfAccounts = (ArrayList<Account>) obj;//downcast safely
+			obj = in.readObject();
+			if (obj instanceof ArrayList)
+			  listOfPosts = (ArrayList<Post>) obj;//downcast safely
+		    obj = in.readObject();
+			if (obj instanceof ArrayList)
+			  listOfEmptyPosts = (ArrayList<Post>) obj;//downcast safely
+			obj = in.readObject();
+			if (obj instanceof ArrayList)
+			  idAccount = (Integer) obj;//downcast safely
+			obj = in.readObject();
+			if (obj instanceof ArrayList)
+			  idPost = (Integer) obj;//downcast safely
+		} catch (ClassNotFoundException e){
+			throw new ClassNotFoundException();
 		}
-		System.out.println("Read two first things...");
-		System.out.println(e1);//check what the salary is
-		System.out.println(e2);
 
 	}
 
