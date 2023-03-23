@@ -2,29 +2,54 @@ package socialmedia;
 import java.util.*;
 import java.io.Serializable;
 
+
+
+/**
+ *
+ */
 public class Post implements Serializable{
 	
-	// attributes
+	// Attributes
 	private int numIdentifier;
 	private String message;
 	private int pointerToOriginal;
 	private HashMap<String, ArrayList<Integer>> storage ;
 	
-	// getter methods
+	// Getter methods
+	
+	/**
+	 * @return numIdentifier ID of post
+	 */
 	public int getNumIdentifier(){
 		return numIdentifier;
 	}
+	
+	/**
+	 * @return message of post
+	 */
 	public String getMessage(){
 		return message;
 	}
+	
+	/**
+	 * @return pointerToOriginal ID of post parent
+	 */
 	public int getPointerToOriginal(){
 		return pointerToOriginal;
 	}
+	
+	/**
+	 * @return storage of post comment and endorsement IDs
+	 */
 	public HashMap<String, ArrayList<Integer>> getPostStorage(){
 		return storage;
 	}
 	
-	//setter methods
+	// Setter methods
+	
+	/**
+	* @param idPost id of post being added to comment storage
+	 */
 	public void addToPostStorageComment(int idPost){
 		ArrayList<Integer> value = new ArrayList<>();
 		value = storage.get("comments");
@@ -32,6 +57,10 @@ public class Post implements Serializable{
 		storage.put("comments", value);
 		
 	}
+	
+	/**
+	* @param idPost id of post being added to endorsement storage
+	 */
 	public void addToPostStorageEndors(int idPost){
 		ArrayList<Integer> value = new ArrayList<>();
 		value = storage.get("endorsements");
@@ -39,13 +68,19 @@ public class Post implements Serializable{
 		storage.put("endorsements", value);
 		
 	}
+	
+	/**
+	* @param message post message
+	 */
 	public void setMessage(String message){
 		this.message = message;
 	}
 	
-	// constructor
-	// original
-	// should have an array to store all the comments and endorsements
+	/**
+	* Original post constructor
+	* @param numIdentifier ID of post
+	* @param message post message
+	 */ 
 	public Post(int numIdentifier,String message){
 		this.numIdentifier = numIdentifier;
 		this.message = message;
@@ -53,30 +88,44 @@ public class Post implements Serializable{
 		pointerToOriginal = -1;
 		// endorsements - the no. endorsements the post has
 		// comments - the no. comments the post has
+		// Arraylist contains the postIDs of these
 		storage.put("comments", new ArrayList<Integer>());
 		storage.put("endorsements", new ArrayList<Integer>());
 	}
-	//comment
+	
+	/**
+	* Comment post constructor
+	* @param numIdentifier ID of post
+	* @param message post message
+	* @param pointerToOriginal ID of parent post
+	 */
 	public Post(int numIdentifier,String message,int pointerToOriginal){
 		this.numIdentifier = numIdentifier;
 		this.message = message;
 		this.pointerToOriginal = pointerToOriginal;
 		storage = new HashMap<String, ArrayList<Integer>>();
-		// endorsements - the no. endorsements the post has
-		// comments - the no. comments the post has
+		/* endorsements - the no. endorsements the post has
+		 comments - the no. comments the post has
+		 */
 		storage.put("comments", new ArrayList<Integer>());
 		storage.put("endorsements", new ArrayList<Integer>());
 	}
 	
-	
-	// endorsement
+	/**
+	* Endorsement post constructor
+	* @param numIdentifier ID of post
+	* @param pointerToOriginal ID of parent post
+	 */ 
 	public Post(int numIdentifier,int pointerToOriginal){
 		this.numIdentifier = numIdentifier;
 		this.pointerToOriginal = pointerToOriginal;
 		message = new String();
 	}
 	
-	//empty 
+	/**
+	* Empty post constructor 
+	* @param numIdentifier ID of post
+	 */ 
 	public Post(int numIdentifier){
 		this.numIdentifier = numIdentifier;
 		message = "The original content was removed from the system and is no longer available.";
