@@ -352,6 +352,7 @@ public class BadSocialMedia implements SocialMediaPlatform {
 		
 		// Find the post with the given id
 		String message="";
+		String newMessage="";
 		boolean postIsThere = false;
 		int postCounter = 0;
 		for (Post i : listOfPosts) {
@@ -361,7 +362,8 @@ public class BadSocialMedia implements SocialMediaPlatform {
 					throw new NotActionablePostException();
 				}
 				listOfPosts.get(postCounter).addToPostStorageEndors(idPost);
-				message = i.getMessage();
+				message = i.getMessage();	
+				
 				break;
 			}
 			postCounter++;
@@ -372,6 +374,43 @@ public class BadSocialMedia implements SocialMediaPlatform {
 			throw new PostIDNotRecognisedException();
 		}
 		
+		// Find account that was endorsed and edit endorsed message
+		for(Account acc : listOfAccounts){
+			HashMap<String, ArrayList<Integer>> storage = new HashMap<>();
+			storage = acc.getAccountStorage();
+					
+			// Iterate over original
+			boolean found = false;
+			int counter = 0;
+			for (int orig : storage.get("original")){
+				if (orig == id){
+					found = true;
+					break;
+					}
+				counter++;
+			}
+					
+			// Iterate over comments
+			if (!found){
+				counter = 0;
+				for (int comm : storage.get("comments")){
+					if (comm == id){
+						found = true;
+						break;
+					}
+					counter++;
+				}
+			}
+			
+			if (found){
+				String endorsedHandle = acc.getHandle();
+				//Edit message
+				newMessage = "EP@" + endorsedHandle + ": " + message;
+				break;
+			}
+		}
+			
+		
 		// Find the account with the given handle
 		boolean isThere = false;
 		int counter = 0;
@@ -379,7 +418,7 @@ public class BadSocialMedia implements SocialMediaPlatform {
 			if (i.getHandle() == handle) {
 				listOfAccounts.get(counter).addToAccountStorageEndors(idPost);
 				Post post = new Post(idPost, id);
-				post.setMessage(message);
+				post.setMessage(newMessage);
 				listOfPosts.add(post);
 				isThere = true;
 				break;
@@ -706,7 +745,7 @@ public class BadSocialMedia implements SocialMediaPlatform {
 	public StringBuilder showChildPostsHelper(int id, int indentLevel) throws PostIDNotRecognisedException{
 		StringBuilder str2 = new StringBuilder();
 		boolean postIsThere2 = false;
-		String stickthing = new String("|"); // stick :)
+		String stickthing = "|"; // stick :)
 		
 		for (Post initialPost : listOfPosts){
 			if (initialPost.getNumIdentifier() == id){
@@ -869,15 +908,13 @@ public class BadSocialMedia implements SocialMediaPlatform {
 	public void savePlatform(String filename) throws IOException {
 		
 		// Saves the platform global variables to a file
-		// CHANGE make filename without +.ser?
-		String filenameEdit = filename + ".ser";
-		try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(filenameEdit))) {
+		try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(filename))) {
 			out.writeObject(listOfAccounts);
 			out.writeObject(listOfPosts);
 			out.writeObject(listOfEmptyPosts);
 			out.writeObject(idAccount);
 			out.writeObject(idPost);
-			System.out.printf("Saved in %s%n",filenameEdit);
+			System.out.printf("Saved in %s%n",filename);
 		}
 	}
 

@@ -61,9 +61,11 @@ public class SocialMediaPlatformTestApp {
 			int ashleyCommTen = platform.commentPost("ashley", ashleyOrigOne, "Comment to my own post");
 			int ashleyEndorEleven = platform.endorsePost("ashley", ashleyCommTen);
 			
+			System.out.println(platform.showIndividualPost(ashleyEndorEleven));
+			
 			assert (platform.getNumberOfAccounts() == 3) : "number of accounts registered in the system does not match";
 		
-		} catch (PostIDNotRecognisedException e){
+		} /*catch (PostIDNotRecognisedException e){
 			assert (false): "PostIDNotRecognisedException thrown incorrectly";
 		} catch (InvalidHandleException e){
 			assert (false): "InvalidHandleException thrown incorrectly";
@@ -81,7 +83,10 @@ public class SocialMediaPlatformTestApp {
 			//assert (false) : "IOException";
 		//} //catch (ClassNotFoundException e){
 			//assert (false) : "ClassNotFoundException thrown incorrectly";
-		//}
+		//} */
+		catch (Exception e){
+			assert (false): "Caught an exception";
+		}
 
 	}
 
