@@ -54,8 +54,7 @@ public class Post implements Serializable{
 		ArrayList<Integer> value = new ArrayList<>();
 		value = storage.get("comments");
 		value.add(idPost);
-		storage.put("comments", value);
-		
+		storage.put("comments", value);	
 	}
 	
 	/**
@@ -66,7 +65,6 @@ public class Post implements Serializable{
 		value = storage.get("endorsements");
 		value.add(idPost);
 		storage.put("endorsements", value);
-		
 	}
 	
 	/**
@@ -130,5 +128,4 @@ public class Post implements Serializable{
 		this.numIdentifier = numIdentifier;
 		message = "The original content was removed from the system and is no longer available.";
 	}
-
 }

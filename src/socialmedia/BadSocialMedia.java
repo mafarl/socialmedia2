@@ -81,7 +81,6 @@ public class BadSocialMedia implements SocialMediaPlatform {
 		assert ((numAccountsInitially + 1) == getNumberOfAccounts()): "The account was added incorrectly";
 		
 		return idAccount++;
-		
 	}
 
 	@Override
@@ -108,7 +107,6 @@ public class BadSocialMedia implements SocialMediaPlatform {
 		assert ((numAccountsInitially + 1) == getNumberOfAccounts()): "The account was added incorrectly";
 		
 		return idAccount++;
-		
 	}
 	
 	@Override
@@ -133,7 +131,6 @@ public class BadSocialMedia implements SocialMediaPlatform {
 				ArrayList<Integer> listOfPostsToDelete = new ArrayList<>();
 				
 				//Iterates over all of its posts
-				
 				for (int post : origposts) {
 					listOfPostsToDelete.add(post);
 				}
@@ -192,7 +189,6 @@ public class BadSocialMedia implements SocialMediaPlatform {
 				ArrayList<Integer> listOfPostsToDelete = new ArrayList<>();
 
 				//Iterates over all of its posts
-
 				for (int post : origposts) {
 					listOfPostsToDelete.add(post);
 				}
@@ -256,14 +252,12 @@ public class BadSocialMedia implements SocialMediaPlatform {
 				assert (newHandle == i.getHandle()): "The handle was changed incorrectly";
 				break;
 			}
-			
 		}
 		
 		// If the oldHandle doesn't exist
 		if (!isThere){
 			throw new HandleNotRecognisedException();
 		}
-
 	}
 
 	@Override
@@ -286,7 +280,6 @@ public class BadSocialMedia implements SocialMediaPlatform {
 		if (!isThere){
 			throw new HandleNotRecognisedException();
 		}	
-
 	}
 
 	@Override
@@ -346,6 +339,7 @@ public class BadSocialMedia implements SocialMediaPlatform {
 	public int createPost(String handle, String message) throws HandleNotRecognisedException, InvalidPostException {
 		
 		int numPostsInitially = listOfPosts.size();
+		
 		// Check if the message is valid
 		if (message.isEmpty() || message.length() > 100){
 			throw new InvalidPostException();
@@ -372,7 +366,6 @@ public class BadSocialMedia implements SocialMediaPlatform {
 		if (!isThere){
 			throw new HandleNotRecognisedException();
 		}
-		
 		return idPost++;
 	}
 
@@ -385,15 +378,20 @@ public class BadSocialMedia implements SocialMediaPlatform {
 		String newMessage="";
 		boolean postIsThere = false;
 		int postCounter = 0;
+		
+		// Finds the post that is endorsed
 		for (Post i : listOfPosts) {
 			if (i.getNumIdentifier() == id) {
 				postIsThere = true;
+				
+				// Checks if it is an endorsement post itself
 				if (listOfPosts.get(postCounter).getPostStorage() == null){
 					throw new NotActionablePostException();
 				}
+				
+				// Adds the id of created post to the endorsed post storage
 				listOfPosts.get(postCounter).addToPostStorageEndors(idPost);
 				message = i.getMessage();	
-				
 				break;
 			}
 			postCounter++;
@@ -438,7 +436,6 @@ public class BadSocialMedia implements SocialMediaPlatform {
 				newMessage = "EP@" + endorsedHandle + ": " + message;
 				break;
 			}
-		
 		}
 		
 		// Find the account with the given handle
@@ -463,9 +460,7 @@ public class BadSocialMedia implements SocialMediaPlatform {
 		if (!isThere){
 			throw new HandleNotRecognisedException();
 		}
-		
 		return idPost++;	
-
 	}
 
 	@Override
@@ -520,9 +515,7 @@ public class BadSocialMedia implements SocialMediaPlatform {
 		if (!isThere){
 			throw new HandleNotRecognisedException();
 		}
-		
 		return idPost++;	
-
 	}
 
 	@Override
@@ -725,7 +718,6 @@ public class BadSocialMedia implements SocialMediaPlatform {
 		}
 		
 		// Checking if it is an endorsement post
-		// do we need to display parent account?
 		if (listOfPosts.get(indexNeededPost).getPostStorage() == null){
 			String message = listOfPosts.get(indexNeededPost).getMessage();
 			return String.format("ID: %d%n Account: %s%n No.endorsements: %d|No.comments: %d%n %s", id, handle, 0, 0, message);
@@ -813,15 +805,15 @@ public class BadSocialMedia implements SocialMediaPlatform {
 							str2.append((stickthing.indent(indentLevel)));
 							str2.append(("| > "+showIndividualPost(childPostID)).indent(indentLevel));
 						}
-					}
-		
+				}
 			}
 		}
+		
+		// Checks if the post exists
 		if (!postIsThere2){
 			System.out.println(str2);
 			throw new PostIDNotRecognisedException();
 		}
-		
 		return str2;
 	}
 
@@ -987,7 +979,5 @@ public class BadSocialMedia implements SocialMediaPlatform {
 		} catch (IOException e){
 			throw new IOException();
 		}
-
 	}
-
 }

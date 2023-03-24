@@ -67,7 +67,6 @@ public class Account implements Serializable{
 		value = storage.get("original");
 		value.add(idPost);
 		storage.put("original", value);
-		
 	}
 	
 	/**
@@ -78,7 +77,6 @@ public class Account implements Serializable{
 		value = storage.get("comments");
 		value.add(idPost);
 		storage.put("comments", value);
-		
 	}
 	
 	/**
@@ -89,7 +87,6 @@ public class Account implements Serializable{
 		value = storage.get("endorsements");
 		value.add(idPost);
 		storage.put("endorsements", value);
-		
 	}
 	
 	// Constructors
@@ -136,9 +133,4 @@ public class Account implements Serializable{
 		storage.put("comments", new ArrayList<Integer>());
 		storage.put("endorsements", new ArrayList<Integer>());
 	}
-	
-	/* If we want to find the most popular acccount (most no. endorsements), then 
-	We loop through all the posts (original, comments) the account has made (stored as their id's in the storage array),
-	and count the number of endorsements for each of the post in the array and add to some sumVariable */
-	
 }
