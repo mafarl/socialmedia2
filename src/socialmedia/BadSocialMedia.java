@@ -60,6 +60,7 @@ public class BadSocialMedia implements SocialMediaPlatform {
 	@Override
 	public int createAccount(String handle) throws IllegalHandleException, InvalidHandleException {
 		
+		int numAccountsInitially = getNumberOfAccounts();
 		// Check if the handle already exists
 		for (Account i : listOfAccounts) {
 			if (i.getHandle().equals(handle)) {
@@ -75,6 +76,10 @@ public class BadSocialMedia implements SocialMediaPlatform {
 		// Create a new account object 
 		Account acc = new Account(handle, idAccount);
 		listOfAccounts.add(acc);
+		
+		// Asserting if account was added
+		assert ((numAccountsInitially + 1) == getNumberOfAccounts()): "The account was added incorrectly";
+		
 		return idAccount++;
 		
 	}
@@ -82,6 +87,7 @@ public class BadSocialMedia implements SocialMediaPlatform {
 	@Override
 	public int createAccount(String handle, String description) throws IllegalHandleException, InvalidHandleException {
 		
+		int numAccountsInitially = getNumberOfAccounts();
 		// Check if the handle already exists
 		for (Account i : listOfAccounts) {
 			if (i.getHandle().equals(handle)) {
@@ -97,6 +103,10 @@ public class BadSocialMedia implements SocialMediaPlatform {
 		// Create a new account object 
 		Account acc = new Account(handle, idAccount, description);
 		listOfAccounts.add(acc);
+		
+		// Asserting if account was added
+		assert ((numAccountsInitially + 1) == getNumberOfAccounts()): "The account was added incorrectly";
+		
 		return idAccount++;
 		
 	}
@@ -106,6 +116,7 @@ public class BadSocialMedia implements SocialMediaPlatform {
 		
 		// Finds the account with the given id
 		int counter = 0;
+		int numAccountsInitially = getNumberOfAccounts();
 		boolean isThere = false;
 		for (Account acc : listOfAccounts) {
 			if (acc.getID() == id) {
@@ -150,6 +161,9 @@ public class BadSocialMedia implements SocialMediaPlatform {
 			counter++;
 		}
 		
+		// Asserting account was removed
+		assert ((numAccountsInitially - 1) == getNumberOfAccounts()): "The account was removed incorrectly";
+		
 		// If the id doesn't exist
 		if (!isThere){
 			throw new AccountIDNotRecognisedException();
@@ -161,6 +175,7 @@ public class BadSocialMedia implements SocialMediaPlatform {
 		
 		// Finds the account with the given handle
 		int counter = 0;
+		int numAccountsInitially = getNumberOfAccounts();
 		boolean isThere = false;
 		for (Account acc : listOfAccounts) {
 			if (acc.getHandle() == handle) {
@@ -204,6 +219,10 @@ public class BadSocialMedia implements SocialMediaPlatform {
 			}
 			counter++;
 		}
+		
+		// Asserting account was removed
+		assert ((numAccountsInitially - 1) == getNumberOfAccounts()): "The account was removed incorrectly";
+		
 		// If the handle doesn't exist
 		if (!isThere){
 			throw new HandleNotRecognisedException();
@@ -232,6 +251,9 @@ public class BadSocialMedia implements SocialMediaPlatform {
 			if (i.getHandle().equals(oldHandle)){
 				i.setHandle(newHandle);
 				isThere = true;
+				
+				// Asserting the handle was changed
+				assert (newHandle == i.getHandle()): "The handle was changed incorrectly";
 				break;
 			}
 			
@@ -253,6 +275,9 @@ public class BadSocialMedia implements SocialMediaPlatform {
 			if (i.getHandle().equals(handle)){
 				i.setDescription(description);
 				isThere = true;
+				
+				// Asserting the description was changed
+				assert (newHandle == i.getDescription()): "The description was changed incorrectly";
 				break;
 			}
 		}
@@ -320,6 +345,7 @@ public class BadSocialMedia implements SocialMediaPlatform {
 	@Override
 	public int createPost(String handle, String message) throws HandleNotRecognisedException, InvalidPostException {
 		
+		int numPostsInitially = listOfPosts.size();
 		// Check if the message is valid
 		if (message.isEmpty() || message.length() > 100){
 			throw new InvalidPostException();
@@ -339,6 +365,9 @@ public class BadSocialMedia implements SocialMediaPlatform {
 			counter++;
 		}
 		
+		// Asserting post was added
+		assert ((numPostsInitially + 1) == getNumberOfAccounts()): "The post was added incorrectly";
+		
 		// If the handle doesn't exist
 		if (!isThere){
 			throw new HandleNotRecognisedException();
@@ -350,6 +379,7 @@ public class BadSocialMedia implements SocialMediaPlatform {
 	@Override
 	public int endorsePost(String handle, int id) throws HandleNotRecognisedException, PostIDNotRecognisedException, NotActionablePostException {
 		
+		int numPostsInitially = listOfPosts.size();
 		// Find the post with the given id
 		String message="";
 		String newMessage="";
@@ -408,8 +438,8 @@ public class BadSocialMedia implements SocialMediaPlatform {
 				newMessage = "EP@" + endorsedHandle + ": " + message;
 				break;
 			}
+		
 		}
-			
 		
 		// Find the account with the given handle
 		boolean isThere = false;
@@ -426,6 +456,9 @@ public class BadSocialMedia implements SocialMediaPlatform {
 			counter++;
 		}
 		
+		// Asserting post was added
+		assert ((numPostsInitially + 1) == getNumberOfAccounts()): "The post was added incorrectly";
+		
 		// If the handle doesn't exist
 		if (!isThere){
 			throw new HandleNotRecognisedException();
@@ -439,6 +472,8 @@ public class BadSocialMedia implements SocialMediaPlatform {
 	public int commentPost(String handle, int id, String message) throws HandleNotRecognisedException,
 			PostIDNotRecognisedException, NotActionablePostException, InvalidPostException {
 
+		int numPostsInitially = listOfPosts.size();
+		
 		// Check if the message is valid
 		if (message.isEmpty() || message.length() > 100){
 			throw new InvalidPostException();
@@ -478,6 +513,9 @@ public class BadSocialMedia implements SocialMediaPlatform {
 			counter++;
 		}
 		
+		// Asserting post was added
+		assert ((numPostsInitially + 1) == getNumberOfAccounts()): "The post was added incorrectly";
+		
 		// If the handle doesn't exist
 		if (!isThere){
 			throw new HandleNotRecognisedException();
@@ -493,6 +531,7 @@ public class BadSocialMedia implements SocialMediaPlatform {
 		// Find the post with the given id
 		boolean postIsThere = false;
 		int postCounter = 0;
+		int numPostsInitially = listOfPosts.size();
 		for (Post i : listOfPosts) {
 			List<Integer> counters = new ArrayList<>();
 			if (i.getNumIdentifier() == id) {
@@ -623,6 +662,9 @@ public class BadSocialMedia implements SocialMediaPlatform {
 			}
 			postCounter++;
 		}
+		
+		// Asserting post was removed
+		assert ((numPostsInitially - 1) == listOfPosts.size()): "The post was removed incorrectly";
 
 		// If the post doesn't exist
 		if (!postIsThere){
@@ -740,7 +782,7 @@ public class BadSocialMedia implements SocialMediaPlatform {
 	 * Recursively displays children comments of a parent post
 	 * @param id ID of post
 	 * @param indentLevel level of indentation
-	 * @return 
+	 * @return str2 StringBuilder that stores all the children posts 
 	 */
 	public StringBuilder showChildPostsHelper(int id, int indentLevel) throws PostIDNotRecognisedException{
 		StringBuilder str2 = new StringBuilder();
@@ -915,6 +957,8 @@ public class BadSocialMedia implements SocialMediaPlatform {
 			out.writeObject(idAccount);
 			out.writeObject(idPost);
 			System.out.printf("Saved in %s%n",filename);
+		} catch (IOException e){
+			throw new IOException();
 		}
 	}
 
@@ -940,6 +984,8 @@ public class BadSocialMedia implements SocialMediaPlatform {
 			  idPost = (Integer) obj;
 		} catch (ClassNotFoundException e){
 			throw new ClassNotFoundException();
+		} catch (IOException e){
+			throw new IOException();
 		}
 
 	}
