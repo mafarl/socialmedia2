@@ -41,8 +41,7 @@ public class SocialMediaPlatformTestApp {
 
 		Integer id,id2,id3;
 		try {
-			
-			
+					
 			id = platform.createAccount("maryia");
 			id2 = platform.createAccount("ashley", "Hello world!");
 			id3 = platform.createAccount("dog");
@@ -60,8 +59,10 @@ public class SocialMediaPlatformTestApp {
 			int maryiaCommNine = platform.commentPost("maryia", ashleyCommEight, "Comment to ashley comment");
 			int ashleyCommTen = platform.commentPost("ashley", ashleyOrigOne, "Comment to my own post");
 			int ashleyEndorEleven = platform.endorsePost("ashley", ashleyCommTen);
+			int maryiaEndorTwelve = platform.endorsePost("maryia", maryiaCommSeven);
+			int dogCommThirteen = platform.commentPost("dog", maryiaCommSeven, "Comment no. 13");
 			
-			System.out.println(platform.showIndividualPost(ashleyEndorEleven));
+			System.out.println(platform.showPostChildrenDetails(maryiaOrigZero));
 			
 			assert (platform.getNumberOfAccounts() == 3) : "number of accounts registered in the system does not match";
 		
@@ -69,21 +70,21 @@ public class SocialMediaPlatformTestApp {
 			assert (false): "PostIDNotRecognisedException thrown incorrectly";
 		} catch (InvalidHandleException e){
 			assert (false): "InvalidHandleException thrown incorrectly";
-		} catch (NotActionablePostException e){
+		} */catch (NotActionablePostException e){
 			assert (false): "NotActionablePostException thrown incorrectly";
-		}catch (HandleNotRecognisedException e){
+		} /*catch (HandleNotRecognisedException e){
 			assert (false): "HandleNotRecognisedException thrown incorrectly";
 		} catch (InvalidPostException e){
 			assert (false): "InvalidPostException thrown incorrectly";
 		} catch (IllegalHandleException e) {
 			assert (false) : "IllegalHandleException thrown incorrectly";
-		} // catch (AccountIDNotRecognisedException e) {
-			//assert (false) : "AccountIDNotRecognizedException thrown incorrectly";
-		//}//catch (IOException e){
-			//assert (false) : "IOException";
-		//} //catch (ClassNotFoundException e){
-			//assert (false) : "ClassNotFoundException thrown incorrectly";
-		//} */
+		} catch (AccountIDNotRecognisedException e) {
+			assert (false) : "AccountIDNotRecognizedException thrown incorrectly";
+		}catch (IOException e){
+			assert (false) : "IOException";
+		} catch (ClassNotFoundException e){
+			assert (false) : "ClassNotFoundException thrown incorrectly";
+		} */
 		catch (Exception e){
 			assert (false): "Caught an exception";
 		}

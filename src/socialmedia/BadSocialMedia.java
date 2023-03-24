@@ -271,7 +271,7 @@ public class BadSocialMedia implements SocialMediaPlatform {
 				isThere = true;
 				
 				// Asserting the description was changed
-				assert (newHandle == i.getDescription()): "The description was changed incorrectly";
+				assert (description == i.getDescription()): "The description was changed incorrectly";
 				break;
 			}
 		}
@@ -360,7 +360,7 @@ public class BadSocialMedia implements SocialMediaPlatform {
 		}
 		
 		// Asserting post was added
-		assert ((numPostsInitially + 1) == getNumberOfAccounts()): "The post was added incorrectly";
+		assert ((numPostsInitially + 1) == listOfPosts.size()): "The post was added incorrectly";
 		
 		// If the handle doesn't exist
 		if (!isThere){
@@ -454,7 +454,7 @@ public class BadSocialMedia implements SocialMediaPlatform {
 		}
 		
 		// Asserting post was added
-		assert ((numPostsInitially + 1) == getNumberOfAccounts()): "The post was added incorrectly";
+		assert ((numPostsInitially + 1) == listOfPosts.size()): "The post was added incorrectly";
 		
 		// If the handle doesn't exist
 		if (!isThere){
@@ -509,7 +509,7 @@ public class BadSocialMedia implements SocialMediaPlatform {
 		}
 		
 		// Asserting post was added
-		assert ((numPostsInitially + 1) == getNumberOfAccounts()): "The post was added incorrectly";
+		assert ((numPostsInitially + 1) == listOfPosts.size()): "The post was added incorrectly";
 		
 		// If the handle doesn't exist
 		if (!isThere){
@@ -948,7 +948,6 @@ public class BadSocialMedia implements SocialMediaPlatform {
 			out.writeObject(listOfEmptyPosts);
 			out.writeObject(idAccount);
 			out.writeObject(idPost);
-			System.out.printf("Saved in %s%n",filename);
 		} catch (IOException e){
 			throw new IOException();
 		}
