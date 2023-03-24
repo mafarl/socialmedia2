@@ -4,12 +4,12 @@ import java.util.*;
 import java.io.*;
 
 /**
- * BadSocialMedia is a minimally compiling, but non-functioning implementor of
+ * SocialMedia is a minimally compiling, but non-functioning implementor of
  * the SocialMediaPlatform interface.
  * 
  * @author Diogo Pacheco
  * @version 1.0 */
-public class BadSocialMedia implements SocialMediaPlatform {
+public class SocialMedia implements SocialMediaPlatform {
 	
 	// attributes
 	private ArrayList<Account> listOfAccounts = new ArrayList<>();
