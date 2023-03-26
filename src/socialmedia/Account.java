@@ -3,7 +3,10 @@ import java.util.*;
 import java.io.Serializable;
 
 /**
- *
+ * Represents an individual account. 
+ * @author Ashley Card
+ * @author Maryia Fralova
+ * @version 1.0 
  */
 public class Account implements Serializable{
 	
@@ -15,28 +18,28 @@ public class Account implements Serializable{
 	
 	// Getter methods
 	
-	/**
+	/** Gets account's handle.
 	 * @return handle of account
 	 */
 	public String getHandle(){
 		return handle;
 	}
 	
-	/**
+	/** Gets account's ID.
 	 * @return ID of account
 	 */
 	public int getID(){
 		return id;
 	}
 	
-	/**
+	/** Gets account's description.
 	 * @return description of account
 	 */
 	public String getDescription(){
 		return description;
 	}
 	
-	/**
+	/** Gets account's storage of posts.
 	 * @return storage of account
 	 */
 	public HashMap<String, ArrayList<Integer>> getAccountStorage(){
@@ -45,21 +48,21 @@ public class Account implements Serializable{
 
 	// Setter methods
 	
-	/**
+	/** Sets account's handle.
 	 * @param handle handle of account
 	 */
 	public void setHandle(String handle){
 		this.handle = handle;
 	}
 	
-	/**
+	/** Sets account's description.
 	 * @param description description of account
 	 */
 	public void setDescription(String description){
 		this.description = description;
 	}
 	
-	/**
+	/** Adds original post ID to the account's storage of posts.
 	 * @param idPost ID of post to be added to account original storage
 	 */
 	public void addToAccountStorageOriginal(int idPost){
@@ -69,7 +72,7 @@ public class Account implements Serializable{
 		storage.put("original", value);
 	}
 	
-	/**
+	/** Adds comment post ID to the account's storage of posts.
 	 * @param idPost ID of post to be added to account comment storage
 	 */
 	public void addToAccountStorageComment(int idPost){
@@ -79,7 +82,7 @@ public class Account implements Serializable{
 		storage.put("comments", value);
 	}
 	
-	/**
+	/** Adds endorsement post ID to the account's storage of posts.
 	 * @param idPost ID of post to be added to account endorsement storage
 	 */
 	public void addToAccountStorageEndors(int idPost){
@@ -91,8 +94,7 @@ public class Account implements Serializable{
 	
 	// Constructors
 	
-	/**
-	 * Account constructor 
+	/** Creates account with a specified handle.
 	 * @param handle handle of account
 	 * @param id ID of account
 	 */
@@ -112,8 +114,7 @@ public class Account implements Serializable{
 		storage.put("endorsements", new ArrayList<Integer>());
 	}
 	
-	/**
-	 * Account constructor with description
+	/** Creates account with a specified handle and description.
 	 * @param handle handle of account
 	 * @param id ID of account
 	 * @param description description of account

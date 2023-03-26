@@ -2,10 +2,11 @@ package socialmedia;
 import java.util.*;
 import java.io.Serializable;
 
-
-
 /**
- *
+ * Represents a post. 
+ * @author Ashley Card
+ * @author Maryia Fralova
+ * @version 1.0 
  */
 public class Post implements Serializable{
 	
@@ -17,28 +18,28 @@ public class Post implements Serializable{
 	
 	// Getter methods
 	
-	/**
+	/** Gets post's ID.
 	 * @return numIdentifier ID of post
 	 */
 	public int getNumIdentifier(){
 		return numIdentifier;
 	}
 	
-	/**
+	/** Gets post's message.
 	 * @return message of post
 	 */
 	public String getMessage(){
 		return message;
 	}
 	
-	/**
+	/** Gets post's parent post.
 	 * @return pointerToOriginal ID of post parent
 	 */
 	public int getPointerToOriginal(){
 		return pointerToOriginal;
 	}
 	
-	/**
+	/** Gets post's storage with comments and endorsements it received.
 	 * @return storage of post comment and endorsement IDs
 	 */
 	public HashMap<String, ArrayList<Integer>> getPostStorage(){
@@ -47,9 +48,9 @@ public class Post implements Serializable{
 	
 	// Setter methods
 	
-	/**
+	/** Adds comment post to the storage of the post being endrosed.
 	* @param idPost id of post being added to comment storage
-	 */
+	*/
 	public void addToPostStorageComment(int idPost){
 		ArrayList<Integer> value = new ArrayList<>();
 		value = storage.get("comments");
@@ -57,9 +58,9 @@ public class Post implements Serializable{
 		storage.put("comments", value);	
 	}
 	
-	/**
+	/** Adds endrosement post to the storage of the post being endrosed.
 	* @param idPost id of post being added to endorsement storage
-	 */
+	*/
 	public void addToPostStorageEndors(int idPost){
 		ArrayList<Integer> value = new ArrayList<>();
 		value = storage.get("endorsements");
@@ -67,18 +68,17 @@ public class Post implements Serializable{
 		storage.put("endorsements", value);
 	}
 	
-	/**
+	/** Sets post's message.
 	* @param message post message
-	 */
+	*/
 	public void setMessage(String message){
 		this.message = message;
 	}
 	
-	/**
-	* Original post constructor
+	/** Creates an original post.
 	* @param numIdentifier ID of post
 	* @param message post message
-	 */ 
+	*/ 
 	public Post(int numIdentifier,String message){
 		this.numIdentifier = numIdentifier;
 		this.message = message;
@@ -91,12 +91,11 @@ public class Post implements Serializable{
 		storage.put("endorsements", new ArrayList<Integer>());
 	}
 	
-	/**
-	* Comment post constructor
+	/** Creates a comment post.
 	* @param numIdentifier ID of post
 	* @param message post message
 	* @param pointerToOriginal ID of parent post
-	 */
+	*/
 	public Post(int numIdentifier,String message,int pointerToOriginal){
 		this.numIdentifier = numIdentifier;
 		this.message = message;
@@ -109,21 +108,19 @@ public class Post implements Serializable{
 		storage.put("endorsements", new ArrayList<Integer>());
 	}
 	
-	/**
-	* Endorsement post constructor
+	/** Creates an endorsement post.
 	* @param numIdentifier ID of post
 	* @param pointerToOriginal ID of parent post
-	 */ 
+	*/ 
 	public Post(int numIdentifier,int pointerToOriginal){
 		this.numIdentifier = numIdentifier;
 		this.pointerToOriginal = pointerToOriginal;
 		message = new String();
 	}
 	
-	/**
-	* Empty post constructor 
+	/** Creates an empty post.
 	* @param numIdentifier ID of post
-	 */ 
+	*/ 
 	public Post(int numIdentifier){
 		this.numIdentifier = numIdentifier;
 		message = "The original content was removed from the system and is no longer available.";

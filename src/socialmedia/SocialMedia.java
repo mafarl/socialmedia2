@@ -4,14 +4,15 @@ import java.util.*;
 import java.io.*;
 
 /**
- * SocialMedia is a minimally compiling, but non-functioning implementor of
+ * SocialMedia is a compiling, fully-functioning implementor of
  * the SocialMediaPlatform interface.
- * 
- * @author Diogo Pacheco
- * @version 1.0 */
+ * @author Ashley Card
+ * @author Maryia Fralova
+ * @version 1.0 
+ */
 public class SocialMedia implements SocialMediaPlatform {
 	
-	// attributes
+	// Attributes
 	private ArrayList<Account> listOfAccounts = new ArrayList<>();
 	private ArrayList<Post> listOfPosts = new ArrayList<>();
 	private ArrayList<Post> listOfEmptyPosts = new ArrayList<>();
@@ -20,35 +21,35 @@ public class SocialMedia implements SocialMediaPlatform {
 	
 	// Getter methods
 	
-	/**
+	/** Gets the array of existing accounts.
 	 * @return listOfAccounts ArrayList of all account IDs
 	 */
 	public ArrayList<Account> getAccounts() {
 		return listOfAccounts;
 	}
 	
-	/**
+	/** Gets the array of existing posts.
 	 * @return listOfPosts ArrayList of all post IDs
 	 */
 	public ArrayList<Post> getPosts() {
 		return listOfPosts;
 	}
 	
-	/**
+	/** Gets the array of existing empty posts.
 	 * @return listOfEmptyPosts ArrayList of empty post IDs
 	 */
 	public ArrayList<Post> getEmptyPosts() {
 		return listOfEmptyPosts;
 	}
 	
-	/**
+	/** Gets account's ID.
 	 * @return idAccount ID of account
 	 */
 	public int getIDAccount() {
 		return idAccount;
 	}
 	
-	/**
+	/** Gets posts's ID.
 	 * @return idPost ID of post
 	 */
 	public int getIDPost() {
@@ -770,8 +771,8 @@ public class SocialMedia implements SocialMediaPlatform {
 	}
 	
 	/**
-	 * Helper function for showPostChildrenDetails
-	 * Recursively displays children comments of a parent post
+	 * Helper function for showPostChildrenDetails.
+	 * Recursively displays children comments of a parent post.
 	 * @param id ID of post
 	 * @param indentLevel level of indentation
 	 * @return str2 StringBuilder that stores all the children posts 
