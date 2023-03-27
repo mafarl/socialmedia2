@@ -770,14 +770,11 @@ public class SocialMedia implements SocialMediaPlatform {
 		return str;
 	}
 	
-	/**
+	/*
 	 * Helper function for showPostChildrenDetails.
 	 * Recursively displays children comments of a parent post.
-	 * @param id ID of post
-	 * @param indentLevel level of indentation
-	 * @return str2 StringBuilder that stores all the children posts 
 	 */
-	public StringBuilder showChildPostsHelper(int id, int indentLevel) throws PostIDNotRecognisedException{
+	private StringBuilder showChildPostsHelper(int id, int indentLevel) throws PostIDNotRecognisedException{
 		StringBuilder str2 = new StringBuilder();
 		boolean postIsThere2 = false;
 		String stickthing = "|"; // stick :)
